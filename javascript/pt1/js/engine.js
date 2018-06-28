@@ -1,6 +1,7 @@
 ;(function() {
     var canvasState = new CanvasState("gameCanvas", 642, 500);
     var input = new Input();
+    var asciiMap = new AsciiMap();
 
     var SCREEN_WIDTH = 80;
     var SCREEN_HEIGHT = 50;
@@ -22,18 +23,7 @@
     function render() {
         canvasState.clear("#eee");
 
-        drawCharacter("@", playerX, playerY, "#000");
-    }
-
-    function drawCharacter(character, x, y, color) {
-        var xOffset = 2;
-        var yOffset = 7;
-        var xWidth = 8;
-        var yHeight = 10;
-
-        canvasState.setFillStyle(color);
-        canvasState.setFont((10 * canvasState.scale) + "px monospace");
-        canvasState.context.fillText(character, (x * xWidth + xOffset) * canvasState.scale, (y * yHeight + yOffset) * canvasState.scale);
+        asciiMap.drawCharacter(canvasState, "@", playerX, playerY, "#000");
     }
 
     function handleInput() {
