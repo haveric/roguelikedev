@@ -7,8 +7,8 @@ Entities.prototype.add = function(entity) {
 }
 
 Entities.prototype.renderAll = function(asciiMap, gameMap, fovMap, canvasState) {
-	for (var y = 0; y < gameMap.height; y++) {
-		for (var x = 0; x < gameMap.width; x++) {
+	for (var x = 0; x < gameMap.width; x++) {
+		for (var y = 0; y < gameMap.height; y++) {
 			var visibleDistance = fovMap.tiles[x][y].fovDistance;
 			var wall = gameMap.tiles[x][y].blockSight;
 
