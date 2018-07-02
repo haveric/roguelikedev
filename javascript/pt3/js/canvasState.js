@@ -1,3 +1,5 @@
+"use strict";
+
 var CanvasState = function(canvasId, width, height) {
     var self = this;
 

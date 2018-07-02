@@ -1,3 +1,5 @@
+"use strict";
+
 ;(function() {
     var canvasState = new CanvasState("gameCanvas", 560, 450);
     var input = new Input();
@@ -42,7 +44,7 @@
         handleInput();
 
 		if (gameState == GameStates.ENEMY_TURN) {
-			for (entity of entities.entities) {
+			for (var entity of entities.entities) {
 				if (entity != player) {
 					console.log("The " + entity.name + " ponders the meaning of its existence.");
 				}

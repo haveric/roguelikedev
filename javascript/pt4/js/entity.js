@@ -1,3 +1,5 @@
+"use strict";
+
 var Entities = function() {
     this.entities = [];
 }

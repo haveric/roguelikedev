@@ -1,3 +1,5 @@
+"use strict";
+
 var Rect = function(x, y, width, height) {
     this.x1 = x;
     this.y1 = y;

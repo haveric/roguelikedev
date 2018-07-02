@@ -1,3 +1,5 @@
+"use strict";
+
 var GameMap = function(width, height) {
     this.width = width;
     this.height = height;
@@ -105,7 +107,7 @@ GameMap.prototype.placeEntities = function(room, entities, maxMonstersPerRoom) {
 		var y = this.getRandomInt(room.y1 + 1, room.y2 - 1);
 
 		var entityExistsAtLocation = false;
-		for (entity of entities.entities) {
+		for (var entity of entities.entities) {
 			if (entity.x == x && entity.y == y) {
 				entityExistsAtLocation = true;
 				break;

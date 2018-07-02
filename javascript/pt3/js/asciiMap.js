@@ -1,3 +1,5 @@
+"use strict";
+
 var AsciiMap = function() {
     this.xOffset = 0;
     this.yOffset = 8;

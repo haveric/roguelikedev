@@ -1,3 +1,5 @@
+"use strict";
+
 ;(function() {
     var canvasState = new CanvasState("gameCanvas", 642, 500);
     var input = new Input();

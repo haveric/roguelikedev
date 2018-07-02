@@ -1,3 +1,5 @@
+"use strict";
+
 var Input = function() {
     var self = this;
     self.keysDown = [];

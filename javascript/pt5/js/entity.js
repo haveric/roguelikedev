@@ -1,3 +1,5 @@
+"use strict";
+
 var Entities = function() {
     this.entities = [];
 }
@@ -37,7 +39,7 @@ Entities.prototype.renderAll = function(asciiMap, gameMap, fovMap, canvasState) 
 
 Entities.prototype.getBlockingEntitiesAtLocation = function(x, y) {
 	var blockingEntity = null;
-	for (entity of this.entities) {
+	for (var entity of this.entities) {
 		if (entity.blocks && entity.x == x && entity.y == y) {
 			blockingEntity = entity;
 			break;

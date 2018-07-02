@@ -1,3 +1,5 @@
+"use strict";
+
 var Key = {
     BACKSPACE: "8",
     TAB: "9",

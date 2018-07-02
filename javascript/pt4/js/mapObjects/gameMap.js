@@ -1,3 +1,5 @@
+"use strict";
+
 var GameMap = function(width, height) {
     this.width = width;
     this.height = height;

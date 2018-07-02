@@ -1,3 +1,5 @@
+"use strict";
+
 var Tile = function(blocked, blockSight = false) {
     this.blocked = blocked;
     this.blockSight = blocked || blockSight;

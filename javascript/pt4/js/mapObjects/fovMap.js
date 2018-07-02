@@ -1,3 +1,5 @@
+"use strict";
+
 var FovMap = function(gameMap) {
 	this.width = gameMap.width;
 	this.height = gameMap.height;
