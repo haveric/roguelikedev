@@ -49,7 +49,7 @@ FovMap.prototype.computeFov = function(x, y, radius, lightWalls) {
 		this.checkLine(x, y, i, yEnd, radius);
 	}
 
-	for (var j = yStart; j <= yEnd; j++) {
+	for (var j = yStart + 1; j < yEnd; j++) {
 		this.checkLine(x, y, xStart, j, radius);
 		this.checkLine(x, y, xEnd, j, radius);
 	}
@@ -62,100 +62,31 @@ FovMap.prototype.computeFov = function(x, y, radius, lightWalls) {
 }
 
 FovMap.prototype.checkLine = function(playerX, playerY, x2, y2, radius) {
-	var deltaX = x2 - playerX;
-	var deltaY = y2 - playerY;
-	if (deltaX == 0) {
-		if (playerY < y2) {
-			for (var i = playerY + 1; i <= y2; i++) {
-				if (!this.checkPoint(playerX, playerY, playerX, i, radius)) {
-					break;
-				}
-			}
-		} else {
-			for (var i = playerY - 1; i >= y2; i--) {
-				if (!this.checkPoint(playerX, playerY, playerX, i, radius)) {
-					break;
-				}
-			}
-		}
-	} else if (deltaY == 0) {
-		if (playerX < x2) {
-			for (var i = playerX + 1; i <= x2; i++) {
-				if (!this.checkPoint(playerX, playerY, i, playerY, radius)) {
-					break;
-				}
-			}
-		} else {
-			for (var i = playerX - 1; i >= x2; i--) {
-				if (!this.checkPoint(playerX, playerY, i, playerY, radius)) {
-					break;
-				}
-			}
-		}
-	} else {
-		var error = 0;
-		var absDeltaX = Math.abs(deltaX);
-		var absDeltaY = Math.abs(deltaY);
+	var dX = Math.abs(x2 - playerX);
+    var dY = Math.abs(y2 - playerY);
+    var sx = playerX < x2 ? 1 : -1;
+    var sy = playerY < y2 ? 1 : -1;
+    var err = (dX > dY ? dX : -dY) / 2;
 
-		if (absDeltaY < absDeltaX) {
-			var deltaError = absDeltaY / absDeltaX;
-			var y = playerY;
-
-			if (playerX < x2) {
-				for (var i = playerX; i <= x2; i++) {
-					if (!this.checkPoint(playerX, playerY, i, y, radius)) {
-						break;
-					}
-
-					error += deltaError;
-					if (error >= .5) {
-						y += Math.sign(deltaY) * 1;
-						error -= 1;
-					}
-				}
-			} else {
-				for (var i = playerX; i >= x2; i--) {
-					if (!this.checkPoint(playerX, playerY, i, y, radius)) {
-						break;
-					}
-
-					error += deltaError;
-					if (error >= .5) {
-						y += Math.sign(deltaY) * 1;;
-						error -= 1;
-					}
-				}
-			}
-		} else {
-			var deltaError = absDeltaX / absDeltaY;
-			var x = playerX;
-			if (playerY < y2) {
-				for (var j = playerY; j <= y2; j++) {
-					if (!this.checkPoint(playerX, playerY, x, j, radius)) {
-						break;
-					}
-
-					error += deltaError;
-					if (error >= .5) {
-						x += Math.sign(deltaX) * 1;
-						error -= 1;
-					}
-				}
-			} else {
-				for (var j = playerY; j >= y2; j--) {
-					if (!this.checkPoint(playerX, playerY, x, j, radius)) {
-						break;
-					}
-
-					error += deltaError;
-					if (error >= .5) {
-						x += Math.sign(deltaX) * 1;
-						error -= 1;
-					}
-				}
-			}
-		}
-	}
+    var x = playerX;
+    var y = playerY;
+    while(true) {
+        if (!this.checkPoint(playerX, playerY, x, y, radius)) {
+            break;
+        }
+        if (x == x2 && y == y2) {
+            break;
+        }
+        var e2 = err;
+        if (e2 > -dX) {
+            err -= dY;
+            x += sx;
+        }
+        if (e2 < dY) {
+            err += dX;
+            y += sy;
+        }
+    }
 }
 
 FovMap.prototype.checkPoint = function(playerX, playerY, x, y, radius) {
