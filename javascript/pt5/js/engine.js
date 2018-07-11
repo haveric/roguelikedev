@@ -1,7 +1,7 @@
 "use strict";
 
 ;(function() {
-    var canvasState = new CanvasState("gameCanvas", 560, 450);
+    var canvasState = new CanvasState("gameCanvas", 800, 500);
     var input = new Input();
     var asciiMap = new AsciiMap();
 

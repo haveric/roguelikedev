@@ -1,9 +1,9 @@
 "use strict";
 
 var AsciiMap = function() {
-    this.xOffset = 0;
-    this.yOffset = 8;
-    this.letterWidth = 7;
+    this.xOffset = 5;
+    this.yOffset = 5;
+    this.letterWidth = 10;
     this.letterHeight = 10;
 
     this.FONT_SIZE = 10;
@@ -11,7 +11,9 @@ var AsciiMap = function() {
 
 AsciiMap.prototype.drawCharacter = function(canvasState, character, x, y, color) {
     canvasState.setFillStyle(color);
-    canvasState.setFont(this.FONT_SIZE * canvasState.scale + "px monospace");
+    canvasState.setFont(this.FONT_SIZE * canvasState.scale + "px arial");
+	canvasState.context.textAlign="center";
+	canvasState.context.textBaseline="middle";
     canvasState.context.fillText(character, (x * this.letterWidth + this.xOffset) * canvasState.scale, (y * this.letterHeight + this.yOffset) * canvasState.scale);
 }
 
