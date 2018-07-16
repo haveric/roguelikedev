@@ -98,7 +98,19 @@ Entity.prototype.moveTowards = function(targetX, targetY, gameMap, entities) {
 }
 
 Entity.prototype.moveAStar = function(target, entities, gameMap) {
-    // TODO: Implement
+    var astar = new AStarMap(gameMap);
+
+    astar.init(this, target, entities, gameMap);
+
+    var path = astar.search(this, target);
+
+    if (path.length > 0 && path.length < 25) {
+        var path = path[0];
+        this.x = path.x;
+        this.y = path.y;
+    } else {
+        this.moveTowards(target.x, target.y, gameMap, entities);
+    }
 }
 
 Entity.prototype.distanceTo = function(other) {

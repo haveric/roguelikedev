@@ -11,8 +11,7 @@ BasicMonster.prototype.takeTurn = function(target, fovMap, gameMap, entities) {
 
     if (fovMap.isPointInFov(monster.x, monster.y)) {
         if (monster.distanceTo(target) >= 2) {
-            monster.moveTowards(target.x, target.y, gameMap, entities);
-            // TODO: Move A*
+            monster.moveAStar(target, entities, gameMap);
         } else if (target.fighter.hp > 0) {
             var attackResults = monster.fighter.attack(target);
             results = results.concat(attackResults);
