@@ -53,6 +53,24 @@ Entities.prototype.getBlockingEntitiesAtLocation = function(x, y) {
     return blockingEntity;
 }
 
+Entities.prototype.getNamesUnderMouse = function(mousePosition, fovMap, scale) {
+    var x = Math.floor(mousePosition.x / (10 * scale));
+    var y = Math.floor(mousePosition.y / (10 * scale));
+
+    var names = "";
+    for (var entity of this.entities) {
+        if (entity.x == x && entity.y == y && fovMap.isPointInFov(entity.x, entity.y)) {
+            if (names != "") {
+                names += ", ";
+            }
+
+            names += entity.name.toUpperCase();
+        }
+    }
+
+    return names;
+}
+
 
 var Entity = function(x, y, character, color, name, blocks = false, renderOrder = RenderOrder.CORPSE, fighter = null, ai = null) {
     this.x = x;

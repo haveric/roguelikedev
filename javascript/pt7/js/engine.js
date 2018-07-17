@@ -2,7 +2,7 @@
 
 ;(function() {
     var canvasState = new CanvasState("gameCanvas", 800, 500);
-    var input = new Input();
+    var input = new Input(canvasState);
     var asciiMap = new AsciiMap();
 
 
@@ -106,6 +106,11 @@
         entities.renderAll(asciiMap, gameMap, fovMap, canvasState);
 
         renderBar(canvasState, 10, panelY, barWidth, "HP", player.fighter.hp, player.fighter.maxHp, "#FF7373", "#BF0000");
+
+        var names = entities.getNamesUnderMouse(input.mousePosition, fovMap, canvasState.scale);
+        if (names != "") {
+            drawText(canvasState, names, 10, panelY - 10, "#E4E4E4", "start", "middle");
+        }
 
         messageLog.render(canvasState);
 
