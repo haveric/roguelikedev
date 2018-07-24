@@ -3,7 +3,7 @@ function handleInput(input, gameState) {
         return handlePlayerTurnInput(input);
     } else if (gameState == GameStates.PLAYERS_DEAD) {
         return handlePlayerDeadInput(input);
-    } else if (gameState == GameStates.SHOW_INVENTORY) {
+    } else if (gameState == GameStates.SHOW_INVENTORY || gameState == GameStates.DROP_INVENTORY) {
         return handleInventoryInput(input);
     }
 }
@@ -47,7 +47,12 @@ function handlePlayerTurnInput(input) {
 
     if (input.isPressed(Key.I)) {
         input.removeKey(Key.I);
-        return {"inventory": true};
+        return {"showInventory": true};
+    }
+
+    if (input.isPressed(Key.D)) {
+        input.removeKey(Key.D);
+        return {"dropInventory": true};
     }
 
     // Toggle "fullscreen" scale

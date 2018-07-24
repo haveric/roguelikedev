@@ -47,6 +47,18 @@ Inventory.prototype.useItem = function(itemEntity) {
     return results;
 }
 
+Inventory.prototype.dropItem = function(item) {
+    var results = [];
+
+    item.x = this.owner.x;
+    item.y = this.owner.y;
+
+    this.removeItem(item);
+    results.push({"itemDropped": item, "message": new Message("You dropped the {0}".format(item.name), "#FFFF00")});
+
+    return results;
+}
+
 Inventory.prototype.removeItem = function(item) {
     var index = this.items.indexOf(item);
     if (index > -1) {

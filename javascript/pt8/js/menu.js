@@ -4,7 +4,7 @@ function renderMenu(canvasState, header, options, width) {
     }
 
     var headerLines = Util.getTextLines(canvasState, header, width);
-    var height = (options.length + headerLines.length) * 10;
+    var height = (options.length + headerLines.length + 1) * 10;
 
     var x = (canvasState.CANVAS_WIDTH / 2) - (width / 2);
     var y = (canvasState.CANVAS_HEIGHT / 2) - (height / 2);
@@ -22,6 +22,8 @@ function renderMenu(canvasState, header, options, width) {
         canvasState.context.fillText(headerLine, x * canvasState.scale, currentY * canvasState.scale);
         currentY += 10;
     }
+
+    currentY += 10; // Add a blank line.
 
     var letterIndex = "a".charCodeAt();
     for (var option of options) {

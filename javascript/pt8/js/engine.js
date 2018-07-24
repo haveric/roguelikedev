@@ -109,8 +109,12 @@
             handlePickup();
         }
 
-        if (actions.inventory) {
+        if (actions.showInventory) {
             showInventory();
+        }
+
+        if (actions.dropInventory) {
+            dropInventory();
         }
 
         if (actions.fullscreen) {
@@ -122,7 +126,7 @@
         }
 
         if (actions.inventoryIndex != undefined) {
-            handleUseItem(actions.inventoryIndex);
+            handleUseOrDropItem(actions.inventoryIndex);
         }
     }
 
@@ -143,8 +147,15 @@
 
         messageLog.render(canvasState);
 
-        if (gameState == GameStates.SHOW_INVENTORY) {
-            renderInventoryMenu(canvasState, "Press the key next to an item to use it, or Esc to cancel.", player.inventory, 500);
+        if (gameState == GameStates.SHOW_INVENTORY || gameState == GameStates.DROP_INVENTORY) {
+            var inventoryTitle = "";
+            if (gameState == GameStates.SHOW_INVENTORY) {
+                inventoryTitle = "Press the key next to an item to use it, or Esc to cancel.";
+            } else if (gameState == GameStates.DROP_INVENTORY) {
+                inventoryTitle = "Press the key next to an item to drop it, or Esc to cancel.";
+            }
+
+            renderInventoryMenu(canvasState, inventoryTitle, player.inventory, 500);
         }
 
         fovRecompute = false;
@@ -195,13 +206,17 @@
         handleTurnResults(playerTurnResults);
     }
 
-    function handleUseItem(inventoryIndex) {
+    function handleUseOrDropItem(inventoryIndex) {
         if (previousGameState != GameStates.PLAYER_DEAD && inventoryIndex < player.inventory.items.length) {
             var playerTurnResults = [];
 
             var item = player.inventory.items[inventoryIndex];
 
-            playerTurnResults = playerTurnResults.concat(player.inventory.useItem(item));
+            if (gameState == GameStates.SHOW_INVENTORY) {
+                playerTurnResults = playerTurnResults.concat(player.inventory.useItem(item));
+            } else if (gameState == GameStates.DROP_INVENTORY) {
+                playerTurnResults = playerTurnResults.concat(player.inventory.dropItem(item));
+            }
 
             handleTurnResults(playerTurnResults);
         }
@@ -212,8 +227,13 @@
         gameState = GameStates.SHOW_INVENTORY;
     }
 
+    function dropInventory() {
+        previousGameState = gameState;
+        gameState = GameStates.DROP_INVENTORY;
+    }
+
     function handleEscape() {
-        if (gameState == GameStates.SHOW_INVENTORY) {
+        if (gameState == GameStates.SHOW_INVENTORY || gameState == GameStates.DROP_INVENTORY) {
             gameState = previousGameState;
         }
     }
@@ -224,6 +244,7 @@
             var deadEntity = playerTurnResult.dead;
             var itemAdded = playerTurnResult.itemAdded;
             var itemConsumed = playerTurnResult.consumed;
+            var itemDropped = playerTurnResult.itemDropped;
 
             if (message) {
                 messageLog.addMessage(message);
@@ -246,6 +267,11 @@
             }
 
             if (itemConsumed) {
+                gameState = GameStates.ENEMY_TURN;
+            }
+
+            if (itemDropped) {
+                entities.add(itemDropped);
                 gameState = GameStates.ENEMY_TURN;
             }
         }
