@@ -46,6 +46,7 @@
     var messageLog = new MessageLog(messageX, messageY, messageWidth, messageMaxLines);
 
     var gameState = GameStates.PLAYERS_TURN;
+    var previousGameState = gameState;
 
     function main() {
         window.requestAnimationFrame(main);
@@ -55,10 +56,10 @@
     }
 
     function update() {
-        handleInput();
+        var actions = handleInput(input, gameState);
+        handleInputActions(actions);
 
         if (gameState == GameStates.ENEMY_TURN) {
-
             for (var entity of entities.entities) {
                 if (entity.ai) {
                     var enemyTurnResults = entity.ai.takeTurn(player, fovMap, gameMap, entities);
@@ -99,6 +100,32 @@
         }
     }
 
+    function handleInputActions(actions) {
+        if (actions.move) {
+            handleMove(actions.move[0], actions.move[1]);
+        }
+
+        if (actions.pickup) {
+            handlePickup();
+        }
+
+        if (actions.inventory) {
+            showInventory();
+        }
+
+        if (actions.fullscreen) {
+            canvasState.toggleScale();
+        }
+
+        if (actions.escape) {
+            handleEscape();
+        }
+
+        if (actions.inventoryIndex != undefined) {
+            handleUseItem(actions.inventoryIndex);
+        }
+    }
+
     function render() {
         canvasState.clear("#000");
 
@@ -116,52 +143,11 @@
 
         messageLog.render(canvasState);
 
+        if (gameState == GameStates.SHOW_INVENTORY) {
+            renderInventoryMenu(canvasState, "Press the key next to an item to use it, or Esc to cancel.", player.inventory, 500);
+        }
 
         fovRecompute = false;
-    }
-
-    function handleInput() {
-        // Movement
-        if (input.isPressed(Key.LEFT) || input.isPressed(Key.NUMPAD4)) {
-            handleMove(-1, 0);
-            input.removeKey(Key.LEFT);
-            input.removeKey(Key.NUMPAD4);
-        } else if (input.isPressed(Key.RIGHT) || input.isPressed(Key.NUMPAD6)) {
-            handleMove(1, 0);
-            input.removeKey(Key.RIGHT);
-            input.removeKey(Key.NUMPAD6);
-        } else if (input.isPressed(Key.UP) || input.isPressed(Key.NUMPAD8)) {
-            handleMove(0, -1);
-            input.removeKey(Key.UP);
-            input.removeKey(Key.NUMPAD8);
-        } else if (input.isPressed(Key.DOWN) || input.isPressed(Key.NUMPAD2)) {
-            handleMove(0, 1);
-            input.removeKey(Key.DOWN);
-            input.removeKey(Key.NUMPAD2);
-        } else if (input.isPressed(Key.NUMPAD7)) {
-            handleMove(-1, -1);
-            input.removeKey(Key.NUMPAD7);
-        } else if (input.isPressed(Key.NUMPAD9)) {
-            handleMove(1, -1);
-            input.removeKey(Key.NUMPAD9);
-        } else if (input.isPressed(Key.NUMPAD1)) {
-            handleMove(-1, 1);
-            input.removeKey(Key.NUMPAD1);
-        } else if (input.isPressed(Key.NUMPAD3)) {
-            handleMove(1, 1);
-            input.removeKey(Key.NUMPAD3);
-        }
-        
-        if (input.isPressed(Key.G)) {
-            handlePickup();
-            input.removeKey(Key.G);
-        }
-
-        // Toggle "fullscreen" scale
-        if (input.isPressed(Key.ENTER) && input.isPressed(Key.ALT)) {
-            canvasState.toggleScale();
-            input.removeKey(Key.ENTER);
-        }
     }
 
     function handleMove(x, y) {
@@ -185,36 +171,59 @@
 
         handleTurnResults(playerTurnResults);
     }
-    
+
     function handlePickup() {
         var playerTurnResults = [];
         if (gameState == GameStates.PLAYERS_TURN) {
-            
+
             var foundItem = false;
             for (var entity of entities.entities) {
                 if (entity.item && entity.x == player.x && entity.y == player.y) {
                     var pickupResults = player.inventory.addItem(entity);
                     playerTurnResults = playerTurnResults.concat(pickupResults);
-                    
+
                     foundItem = true;
                     break;
                 }
             }
-        
+
             if (!foundItem) {
                 messageLog.addMessage(new Message("There is nothing here to pick up.", "#FFFF00"));
             }
         }
-        
+
         handleTurnResults(playerTurnResults);
     }
-    
+
+    function handleUseItem(inventoryIndex) {
+        if (previousGameState != GameStates.PLAYER_DEAD && inventoryIndex < player.inventory.items.length) {
+            var playerTurnResults = [];
+
+            var item = player.inventory.items[inventoryIndex];
+
+            playerTurnResults = playerTurnResults.concat(player.inventory.useItem(item));
+
+            handleTurnResults(playerTurnResults);
+        }
+    }
+
+    function showInventory() {
+        previousGameState = gameState;
+        gameState = GameStates.SHOW_INVENTORY;
+    }
+
+    function handleEscape() {
+        if (gameState == GameStates.SHOW_INVENTORY) {
+            gameState = previousGameState;
+        }
+    }
+
     function handleTurnResults(playerTurnResults) {
         for (var playerTurnResult of playerTurnResults) {
             var message = playerTurnResult.message;
             var deadEntity = playerTurnResult.dead;
             var itemAdded = playerTurnResult.itemAdded;
-            
+            var itemConsumed = playerTurnResult.consumed;
 
             if (message) {
                 messageLog.addMessage(message);
@@ -230,10 +239,13 @@
 
                 messageLog.addMessage(message);
             }
-            
+
             if (itemAdded) {
                 entities.remove(itemAdded);
-                
+                gameState = GameStates.ENEMY_TURN;
+            }
+
+            if (itemConsumed) {
                 gameState = GameStates.ENEMY_TURN;
             }
         }

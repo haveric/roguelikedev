@@ -31,5 +31,4 @@ function renderBar(canvasState, x, y, totalWidth, name, value, max, barColor, bg
     }
 
     drawText(canvasState, "{0}: {1}/{2}".format(name, value, max), x + totalWidth / 2, y + 5, "#ffffff", "center", "middle");
-
 }

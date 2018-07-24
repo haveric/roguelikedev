@@ -1,7 +1,6 @@
 "use strict";
 
 var Message = function(text, color="#ffffff") {
-
     this.text = text;
     this.color = color;
 }
@@ -24,7 +23,7 @@ MessageLog.prototype.render = function(canvasState) {
     if (this.updateLines) {
         var updatedMessages = [];
         for (var message of this.messages) {
-            var messageLines = this.getLines(canvasState, message.text, this.width);
+            var messageLines = Util.getTextLines(canvasState, message.text, this.width);
 
             for (var line of messageLines) {
                 if (updatedMessages.length == this.maxLines) {
@@ -43,23 +42,4 @@ MessageLog.prototype.render = function(canvasState) {
         drawText(canvasState, message.text, this.x, y, message.color);
         y += 10;
     }
-}
-
-MessageLog.prototype.getLines = function(canvasState, text, maxWidth) {
-    var words = text.split(" ");
-    var lines = [];
-    var currentLine = words[0];
-
-    for (var i = 1; i < words.length; i++) {
-        var word = words[i];
-        var width = canvasState.context.measureText(currentLine + " " + word).width;
-        if (width < maxWidth) {
-            currentLine += " " + word;
-        } else {
-            lines.push(currentLine);
-            currentLine = word;
-        }
-    }
-    lines.push(currentLine);
-    return lines;
 }

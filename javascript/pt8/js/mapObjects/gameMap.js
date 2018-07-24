@@ -129,12 +129,12 @@ GameMap.prototype.placeEntities = function(room, entities, maxMonstersPerRoom, m
             entities.add(monster);
         }
     }
-    
+
     for (var i = 0; i < maxItemPerRoom; i++) {
         // Choose a random location in the room
         var x = Util.getRandomInt(room.x1 + 1, room.x2 - 1);
         var y = Util.getRandomInt(room.y1 + 1, room.y2 - 1);
-        
+
         var entityExistsAtLocation = false;
         for (var entity of entities.entities) {
             if (entity.x == x && entity.y == y) {
@@ -142,12 +142,12 @@ GameMap.prototype.placeEntities = function(room, entities, maxMonstersPerRoom, m
                 break;
             }
         }
-        
+
         if (!entityExistsAtLocation) {
             var item;
-            var itemComponent = new Item();
+            var itemComponent = new Item(heal, {"amount": 4});
             item = new Entity(x, y, "!", "#7F00FF", "Healing Potion", false, RenderOrder.ITEM, null, null, itemComponent)
-            
+
             entities.add(item);
         }
     }

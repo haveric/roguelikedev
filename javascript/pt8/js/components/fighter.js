@@ -34,3 +34,11 @@ Fighter.prototype.attack = function(target) {
 
     return results;
 }
+
+Fighter.prototype.heal = function(amount) {
+    this.hp += amount;
+
+    if (this.hp > this.maxHp) {
+        this.hp = this.maxHp;
+    }
+}
