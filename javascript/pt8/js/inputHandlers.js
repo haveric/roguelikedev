@@ -6,6 +6,8 @@ function handleInput(input, gameState) {
     } else if (gameState == GameStates.SHOW_INVENTORY || gameState == GameStates.DROP_INVENTORY) {
         return handleInventoryInput(input);
     }
+
+    return {};
 }
 
 function handlePlayerTurnInput(input) {
