@@ -10,7 +10,7 @@ function renderMenu(canvasState, header, options, width) {
     var y = (canvasState.CANVAS_HEIGHT / 2) - (height / 2);
 
     canvasState.setFillStyle("rgba(255,255,255,.7)");
-    canvasState.context.fillRect(x * canvasState.scale, y * canvasState.scale, width * canvasState.scale, height * canvasState.scale);
+    canvasState.fillRect(x, y, width, height);
 
     canvasState.setFillStyle("#000");
     canvasState.setFont(10);
@@ -18,7 +18,7 @@ function renderMenu(canvasState, header, options, width) {
 
     var currentY = y + 8;
     for (var headerLine of headerLines) {
-        canvasState.context.fillText(headerLine, x * canvasState.scale, currentY * canvasState.scale);
+        canvasState.fillText(headerLine, x, currentY);
         currentY += 10;
     }
 
@@ -27,7 +27,7 @@ function renderMenu(canvasState, header, options, width) {
     var letterIndex = "a".charCodeAt();
     for (var option of options) {
         var text = "(" + String.fromCharCode(letterIndex) + ") " + option;
-        canvasState.context.fillText(text, x * canvasState.scale, currentY * canvasState.scale);
+        canvasState.fillText(text, x, currentY);
         currentY += 10;
         letterIndex += 1;
     }

@@ -13,13 +13,10 @@ AsciiMap.prototype.drawCharacter = function(canvasState, character, x, y, color)
     canvasState.setFillStyle(color);
     canvasState.setFont(this.FONT_SIZE);
     canvasState.setTextAlign("center", "middle");
-    canvasState.context.fillText(character, (x * this.letterWidth + this.xOffset) * canvasState.scale, (y * this.letterHeight + this.yOffset) * canvasState.scale);
+    canvasState.fillText(character, x * this.letterWidth + this.xOffset, y * this.letterHeight + this.yOffset);
 }
 
 AsciiMap.prototype.drawBackground = function(canvasState, x, y, color) {
     canvasState.setFillStyle(color);
-
-    var xStart = (x * this.letterWidth) * canvasState.scale;
-    var yStart = (y * this.letterHeight) * canvasState.scale;
-    canvasState.context.fillRect(Math.floor(xStart), Math.floor(yStart), Math.ceil(this.letterWidth * canvasState.scale), Math.ceil(this.letterHeight * canvasState.scale));
+    canvasState.fillRect(x * this.letterWidth, y * this.letterHeight, this.letterWidth, this.letterHeight);
 }

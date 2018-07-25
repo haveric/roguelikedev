@@ -96,3 +96,11 @@ CanvasState.prototype.setTextAlign = function(align, baseline) {
         this.oldBaseline = baseline;
     }
 }
+
+CanvasState.prototype.fillText = function(text, x, y) {
+    this.context.fillText(text, x * this.scale, y * this.scale);
+}
+
+CanvasState.prototype.fillRect = function(x, y, width, height) {
+    this.context.fillRect(Math.floor(x * this.scale), Math.floor(y * this.scale), Math.ceil(width * this.scale), Math.ceil(height * this.scale));
+}

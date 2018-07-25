@@ -10,15 +10,12 @@ function drawText(canvasState, text, x, y, color, align, baseline) {
     canvasState.setFillStyle(color);
     canvasState.setFont(10);
     canvasState.setTextAlign(align || "start", baseline || "alphabetic");
-    canvasState.context.fillText(text, x * canvasState.scale, y * canvasState.scale);
+    canvasState.fillText(text, x, y);
 }
 
 function drawRect(canvasState, x, y, w, h, color) {
     canvasState.setFillStyle(color);
-
-    var xStart = x * canvasState.scale;
-    var yStart = y * canvasState.scale;
-    canvasState.context.fillRect(Math.floor(xStart), Math.floor(yStart), Math.ceil(w * canvasState.scale), Math.ceil(h * canvasState.scale));
+    canvasState.fillRect(x, y, w, h);
 }
 
 function renderBar(canvasState, x, y, totalWidth, name, value, max, barColor, bgColor) {
