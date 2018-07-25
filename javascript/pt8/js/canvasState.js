@@ -44,6 +44,8 @@ CanvasState.prototype.resizeCanvas = function() {
         this.canvas.height = this.CANVAS_HEIGHT;
         this.scale = 1;
     }
+
+    this.oldFont = "none";
 }
 
 CanvasState.prototype.toggleScale = function() {
