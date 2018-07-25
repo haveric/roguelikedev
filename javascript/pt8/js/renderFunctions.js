@@ -8,9 +8,8 @@ var RenderOrder = {
 
 function drawText(canvasState, text, x, y, color, align, baseline) {
     canvasState.setFillStyle(color);
-    canvasState.setFont(10 * canvasState.scale + "px arial");
-    canvasState.context.textAlign = align || "start";
-    canvasState.context.textBaseline = baseline || "alphabetic";
+    canvasState.setFont(10);
+    canvasState.setTextAlign(align || "start", baseline || "alphabetic");
     canvasState.context.fillText(text, x * canvasState.scale, y * canvasState.scale);
 }
 

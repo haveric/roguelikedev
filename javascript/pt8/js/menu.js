@@ -13,9 +13,8 @@ function renderMenu(canvasState, header, options, width) {
     canvasState.context.fillRect(x * canvasState.scale, y * canvasState.scale, width * canvasState.scale, height * canvasState.scale);
 
     canvasState.setFillStyle("#000");
-    canvasState.setFont(10 * canvasState.scale + "px arial");
-    canvasState.context.textAlign = "start";
-    canvasState.context.textBaseline = "alphabetic";
+    canvasState.setFont(10);
+    canvasState.setTextAlign("start", "alphabetic");
 
     var currentY = y + 8;
     for (var headerLine of headerLines) {

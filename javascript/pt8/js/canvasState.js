@@ -9,8 +9,7 @@ var CanvasState = function(canvasId, width, height) {
     self.canvas = document.getElementById(canvasId);
     self.context = self.canvas.getContext("2d");
 
-    self.oldFillStyle = "none";
-    self.oldFont = "none";
+    this.resetStates();
 
     self.toScale = JSON.parse(localStorage.getItem("CanvasState.toScale"));
 
@@ -19,6 +18,13 @@ var CanvasState = function(canvasId, width, height) {
     });
 
     self.resizeCanvas();
+}
+
+CanvasState.prototype.resetStates = function() {
+    this.oldFillStyle = "none";
+    this.oldFont = "none";
+    this.oldAlign = "none";
+    this.oldBaseline = "none";
 }
 
 CanvasState.prototype.resizeCanvas = function() {
@@ -45,7 +51,7 @@ CanvasState.prototype.resizeCanvas = function() {
         this.scale = 1;
     }
 
-    this.oldFont = "none";
+    this.resetStates();
 }
 
 CanvasState.prototype.toggleScale = function() {
@@ -68,9 +74,25 @@ CanvasState.prototype.setFillStyle = function(fillStyle) {
     }
 }
 
-CanvasState.prototype.setFont = function(font) {
-    if (font != this.oldFont) {
-        this.context.font = font;
-        this.oldFont = font;
+CanvasState.prototype.setFont = function(size, font) {
+    var size = size * this.scale;
+    var font = font || "arial";
+
+    var fontString = size + "px " + font;
+    if (fontString != this.oldFont) {
+        this.context.font = fontString;
+        this.oldFont = fontString;
+    }
+}
+
+CanvasState.prototype.setTextAlign = function(align, baseline) {
+    if (align != this.oldAlign) {
+        this.context.textAlign = align;
+        this.oldAlign = align;
+    }
+
+    if (baseline != this.oldBaseline) {
+        this.context.textBaseline = baseline;
+        this.oldBaseline = baseline;
     }
 }

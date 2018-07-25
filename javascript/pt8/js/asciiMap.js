@@ -11,9 +11,8 @@ var AsciiMap = function() {
 
 AsciiMap.prototype.drawCharacter = function(canvasState, character, x, y, color) {
     canvasState.setFillStyle(color);
-    canvasState.setFont(this.FONT_SIZE * canvasState.scale + "px arial");
-    canvasState.context.textAlign="center";
-    canvasState.context.textBaseline="middle";
+    canvasState.setFont(this.FONT_SIZE);
+    canvasState.setTextAlign("center", "middle");
     canvasState.context.fillText(character, (x * this.letterWidth + this.xOffset) * canvasState.scale, (y * this.letterHeight + this.yOffset) * canvasState.scale);
 }
 
