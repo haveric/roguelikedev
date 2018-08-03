@@ -37,6 +37,10 @@
             var loadSavedGame = actions.loadSavedGame;
             var exitGame = actions.escape;
 
+            if (actions.fullscreen) {
+                canvasState.toggleScale();
+            }
+
             if (showLoadErrorMessage && (newGame || loadSavedGame || exitGame)) {
                 showLoadErrorMessage = false;
             } else if (newGame) {

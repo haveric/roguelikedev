@@ -11,7 +11,7 @@ var CanvasState = function(canvasId, width, height) {
 
     self.resetStates();
 
-    self.toScale = JSON.parse(localStorage.getItem("CanvasState.toScale"));
+    self.toScale = JSON.parse(localStorage.getItem("CanvasState.toScale")) || true;
 
     self.resizeListener = window.addEventListener("resize", function(e) {
         self.resizeCanvas();

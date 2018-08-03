@@ -144,6 +144,12 @@ function handleMainMenu(input) {
         return {"escape": true};
     }
 
+    // Toggle "fullscreen" scale
+    if (input.isPressed(Key.ENTER) && input.isPressed(Key.ALT)) {
+        input.removeKey(Key.ENTER);
+        return {"fullscreen": true};
+    }
+
     return {};
 }
 
