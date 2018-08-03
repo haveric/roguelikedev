@@ -43,9 +43,14 @@ var Util = {
     },
 
     getTextLines: function(canvasState, text, maxWidth) {
+        var lines = [];
+
+        if (text === "") {
+            return lines;
+        }
+
         maxWidth = maxWidth * canvasState.scale;
         var words = text.split(" ");
-        var lines = [];
         var currentLine = words[0];
 
         for (var i = 1; i < words.length; i++) {

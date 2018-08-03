@@ -4,13 +4,19 @@ function renderMenu(canvasState, header, options, width) {
     }
 
     var headerLines = Util.getTextLines(canvasState, header, width);
-    var height = (options.length + headerLines.length + 1) * 10;
+    var numHeaderLines = headerLines.length;
+    if (numHeaderLines > 0) {
+        numHeaderLines += 1;
+    }
+    var height = (options.length + numHeaderLines) * 10;
+
+    var padding = 3;
 
     var x = (canvasState.CANVAS_WIDTH / 2) - (width / 2);
     var y = (canvasState.CANVAS_HEIGHT / 2) - (height / 2);
 
     canvasState.setFillStyle("rgba(255,255,255,.7)");
-    canvasState.fillRect(x, y, width, height);
+    canvasState.fillRect(x - padding, y - padding, width + (padding * 2), height + (padding * 2));
 
     canvasState.setFillStyle("#000");
     canvasState.setFont(10);
@@ -22,7 +28,9 @@ function renderMenu(canvasState, header, options, width) {
         currentY += 10;
     }
 
-    currentY += 10; // Add a blank line.
+    if (numHeaderLines > 0) {
+        currentY += 10; // Add a blank line.
+    }
 
     var letterIndex = "a".charCodeAt();
     for (var option of options) {
@@ -49,6 +57,13 @@ function renderInventoryMenu(canvasState, header, inventory, inventoryWidth) {
 function renderMainMenu(canvasState) {
     var bgImage = textureManager.get("menu-bg");
     canvasState.drawImage(bgImage, 0, 0, canvasState.CANVAS_WIDTH, canvasState.CANVAS_HEIGHT);
+
+    canvasState.setFillStyle("#FFFF00");
+    canvasState.setFont(10);
+    canvasState.setTextAlign("center", "middle");
+    canvasState.fillText("TOMBS OF THE ANCIENT KINGS", canvasState.CANVAS_WIDTH / 2, (canvasState.CANVAS_HEIGHT / 2) - 30);
+    canvasState.fillText("By haveric", canvasState.CANVAS_WIDTH / 2, canvasState.CANVAS_HEIGHT - 20);
+
     var options = ["Play a new game", "Continue last game", "Quit"];
     renderMenu(canvasState, "", options, 150);
 }
