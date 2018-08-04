@@ -68,6 +68,39 @@ function renderMainMenu(canvasState) {
     renderMenu(canvasState, "", options, 150);
 }
 
+function renderLevelUpMenu(canvasState, player) {
+    var options = ["Constitution (+20 HP, from {0})".format(player.maxHp),
+                   "Strength (+1 attack, from {0})".format(player.power),
+                   "Agility (+1 defense, from {0})".format(player.defense)];
+
+    renderMenu(canvasState, "Level up! Choose a stat to raise: ", options, 400);
+}
+
+function renderCharacterScreen(canvasState, player) {
+    var width = 150;
+    var height = 80;
+
+    var padding = 3;
+
+    var x = (canvasState.CANVAS_WIDTH / 2) - (width / 2);
+    var y = (canvasState.CANVAS_HEIGHT / 2) - (height / 2);
+
+    canvasState.setFillStyle("rgba(255,255,255,.7)");
+    canvasState.fillRect(x - padding, y - padding, width + (padding * 2), height + (padding * 2));
+
+    canvasState.setFillStyle("#000");
+    canvasState.setFont(10);
+    canvasState.setTextAlign("start", "alphabetic");
+
+    canvasState.fillText("Character Information", x, y+=10);
+    canvasState.fillText("Level: {0}".format(player.level), x, y+=10);
+    canvasState.fillText("Experience: {0}".format(player.xp), x, y+=10);
+    canvasState.fillText("Experience to level: {0}".format(player.getXpToNextLevel()), x, y+=10);
+    canvasState.fillText("Max HP: {0}".format(player.maxHp), x, y+=20);
+    canvasState.fillText("Attack: {0}".format(player.power), x, y+=10);
+    canvasState.fillText("Defense: {0}".format(player.defense), x, y+=10);
+}
+
 function renderMessageBox(canvasState, header, width) {
     var options = [];
     renderMenu(canvasState, header, options, width);

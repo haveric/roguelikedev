@@ -130,6 +130,10 @@
             handleMove(actions.move[0], actions.move[1]);
         }
 
+        if (actions.wait) {
+            gameState = GameStates.ENEMY_TURN;
+        }
+
         if (actions.pickup) {
             handlePickup();
         }
@@ -156,6 +160,14 @@
 
         if (actions.takeStairs) {
             handleTakeStairs();
+        }
+
+        if (actions.levelUp) {
+            handleLevelUp(actions.levelUp);
+        }
+
+        if (actions.showCharacterScreen) {
+            handleShowCharacterScreen();
         }
     }
 
@@ -207,6 +219,10 @@
                 }
 
                 renderInventoryMenu(canvasState, inventoryTitle, player.inventory, 500);
+            } else if (gameState == GameStates.LEVEL_UP) {
+                renderLevelUpMenu(canvasState, player);
+            } else if (gameState == GameStates.CHARACTER_SCREEN) {
+                renderCharacterScreen(canvasState, player);
             }
 
             fovRecompute = false;
@@ -295,6 +311,24 @@
         }
     }
 
+    function handleLevelUp(type) {
+        if (type == "hp") {
+            player.maxHp += 20;
+            player.hp += 20;
+        } else if (type == "str") {
+            player.power += 1;
+        } else if (type == "def") {
+            player.defense += 1;
+        }
+
+        gameState = previousGameState;
+    }
+
+    function handleShowCharacterScreen() {
+        previousGameState = gameState;
+        gameState = GameStates.CHARACTER_SCREEN;
+    }
+
     function showInventory() {
         previousGameState = gameState;
         gameState = GameStates.SHOW_INVENTORY;
@@ -308,7 +342,7 @@
     function handleEscape() {
         var playerTurnResults = [];
 
-        if (gameState == GameStates.SHOW_INVENTORY || gameState == GameStates.DROP_INVENTORY) {
+        if (gameState == GameStates.SHOW_INVENTORY || gameState == GameStates.DROP_INVENTORY || gameState == GameStates.CHARACTER_SCREEN) {
             gameState = previousGameState;
         } else if (gameState == GameStates.TARGETING) {
             playerTurnResults.push({"targetingCancelled": true});
@@ -349,6 +383,7 @@
             var itemDropped = playerTurnResult.itemDropped;
             var targeting = playerTurnResult.targeting;
             var targetingCancelled = playerTurnResult.targetingCancelled;
+            var xp = playerTurnResult.xp;
 
             if (message) {
                 messageLog.addMessage(message);
@@ -357,6 +392,17 @@
             if (targetingCancelled) {
                 gameState = previousGameState;
                 messageLog.addMessage(new Message("Targeting cancelled"));
+            }
+
+            if (xp) {
+                var leveledUp = player.addXp(xp);
+                messageLog.addMessage(new Message("You gain {0} experience points.".format(xp)));
+
+                if (leveledUp) {
+                    messageLog.addMessage(new Message("Your battle skills grow stronger! You reached level {0}!".format(player.level), "#FFFF00"));
+                    previousGameState = gameState;
+                    gameState = GameStates.LEVEL_UP;
+                }
             }
 
             if (deadEntity) {

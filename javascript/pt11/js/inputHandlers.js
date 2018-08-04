@@ -7,6 +7,10 @@ function handleKeyInput(input, gameState) {
         return handleTargetingInput(input);
     } else if (gameState == GameStates.SHOW_INVENTORY || gameState == GameStates.DROP_INVENTORY) {
         return handleInventoryInput(input);
+    } else if (gameState == GameStates.LEVEL_UP) {
+        return handleLevelUpMenu(input);
+    } else if (gameState == GameStates.CHARACTER_SCREEN) {
+        return handleCharacterScreen(input);
     }
 
     return {};
@@ -42,26 +46,24 @@ function handlePlayerTurnInput(input) {
     } else if (input.isPressed(Key.NUMPAD3)) {
         input.removeKey(Key.NUMPAD3);
         return {"move": [1, 1]};
-    }
-
-    if (input.isPressed(Key.G)) {
+    } else if (input.isPressed(Key.NUMPAD5)) {
+        input.removeKey(Key.NUMPAD5);
+        return {"wait": true};
+    } else if (input.isPressed(Key.G)) {
         input.removeKey(Key.G);
         return {"pickup": true};
-    }
-
-    if (input.isPressed(Key.I)) {
+    } else if (input.isPressed(Key.I)) {
         input.removeKey(Key.I);
         return {"showInventory": true};
-    }
-
-    if (input.isPressed(Key.D)) {
+    } else if (input.isPressed(Key.D)) {
         input.removeKey(Key.D);
         return {"dropInventory": true};
-    }
-
-    if (input.isPressed(Key.ENTER)) {
+    } else if (input.isPressed(Key.ENTER)) {
         input.removeKey(Key.ENTER);
         return {"takeStairs": true};
+    } else if (input.isPressed(Key.C)) {
+        input.removeKey(Key.C);
+        return {"showCharacterScreen": true};
     }
 
     // Toggle "fullscreen" scale
@@ -149,6 +151,27 @@ function handleMainMenu(input) {
     if (input.isPressed(Key.ENTER) && input.isPressed(Key.ALT)) {
         input.removeKey(Key.ENTER);
         return {"fullscreen": true};
+    }
+
+    return {};
+}
+
+function handleLevelUpMenu(input) {
+    if (input.isPressed(Key.A)) {
+        return {"levelUp": "hp"};
+    } else if (input.isPressed(Key.B)) {
+        return {"levelUp": "str"};
+    } else if (input.isPressed(Key.C)) {
+        return {"levelUp": "def"};
+    }
+
+    return {};
+}
+
+function handleCharacterScreen(input) {
+    if (input.isPressed(Key.ESCAPE)) {
+        input.removeKey(Key.ESCAPE);
+        return {"escape": true};
     }
 
     return {};
