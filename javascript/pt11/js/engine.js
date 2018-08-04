@@ -153,6 +153,10 @@
         if (actions.inventoryIndex != undefined) {
             handleUseOrDropItem(actions.inventoryIndex);
         }
+
+        if (actions.takeStairs) {
+            handleTakeStairs();
+        }
     }
 
     function handleMouseActions(actions) {
@@ -180,6 +184,12 @@
             entities.renderAll(asciiMap, gameMap, fovMap, canvasState);
 
             renderBar(canvasState, 10, constants.PANEL_Y, constants.HP_BAR_WIDTH, "HP", player.hp, player.maxHp, "#FF7373", "#BF0000");
+
+            canvasState.setFont(10);
+            canvasState.setTextAlign("start", "alphabetic");
+            canvasState.setFillStyle("#FFFFFF");
+
+            canvasState.fillText("Dungeon Level: {0}".format(gameMap.dungeonLevel), 10, constants.PANEL_Y + 20);
 
             var names = entities.getNamesUnderMouse(input.mousePosition, fovMap, canvasState.scale);
             if (names != "") {
@@ -261,6 +271,27 @@
             }
 
             handleTurnResults(playerTurnResults);
+        }
+    }
+
+    function handleTakeStairs() {
+        if (gameState == GameStates.PLAYERS_TURN) {
+
+            var foundStairs = false;
+            for (var entity of entities.entities) {
+                if (entity instanceof Stairs && entity.x == player.x && entity.y == player.y) {
+                    gameMap.nextFloor(player, entities, messageLog, constants);
+                    fovMap = new FovMap(gameMap);
+                    fovRecompute = true;
+
+                    foundStairs = true;
+                    break;
+                }
+            }
+
+            if (!foundStairs) {
+                messageLog.addMessage(new Message("There are no stairs here.", "#FFFF00"));
+            }
         }
     }
 

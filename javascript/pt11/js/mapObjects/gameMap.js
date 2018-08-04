@@ -7,7 +7,7 @@ var GameMap = function(width, height, dungeonLevel) {
 
     this.width = width;
     this.height = height;
-    this.dungeonLevel = dungeonLevel;
+    this.dungeonLevel = dungeonLevel || 1;
 
     this.tiles = this.initTiles();
 }
@@ -181,4 +181,17 @@ GameMap.prototype.isBlocked = function(x, y) {
     }
 
     return blocked;
+}
+
+GameMap.prototype.nextFloor = function(player, entities, messageLog, constants) {
+    this.dungeonLevel += 1;
+
+    entities.removeAll();
+    entities.add(player);
+    this.tiles = this.initTiles();
+    this.makeMap(constants.MAP_WIDTH, constants.MAP_HEIGHT, player, entities, constants.MAX_MONSTERS_PER_ROOM, constants.MAX_ITEMS_PER_ROOM);
+
+    player.heal(Math.floor(player.maxHp / 2));
+
+    messageLog.addMessage(new Message("You take a moment to rest, and recover your strength.", "#B973FF"));
 }

@@ -15,6 +15,10 @@ Entities.prototype.remove = function(entity) {
     }
 }
 
+Entities.prototype.removeAll = function() {
+    this.entities = [];
+}
+
 Entities.prototype.renderAll = function(asciiMap, gameMap, fovMap, canvasState) {
     for (var x = 0; x < gameMap.width; x++) {
         for (var y = 0; y < gameMap.height; y++) {

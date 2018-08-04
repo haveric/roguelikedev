@@ -60,6 +60,7 @@ function handlePlayerTurnInput(input) {
     }
 
     if (input.isPressed(Key.ENTER)) {
+        input.removeKey(Key.ENTER);
         return {"takeStairs": true};
     }
 
