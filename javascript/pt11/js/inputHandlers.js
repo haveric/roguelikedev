@@ -58,8 +58,9 @@ function handlePlayerTurnInput(input) {
     } else if (input.isPressed(Key.D)) {
         input.removeKey(Key.D);
         return {"dropInventory": true};
-    } else if (input.isPressed(Key.ENTER)) {
+    } else if (input.isPressed(Key.ENTER) || (input.isPressed(Key.SHIFT) && input.isPressed(Key.PERIOD))) {
         input.removeKey(Key.ENTER);
+        input.removeKey(Key.PERIOD);
         return {"takeStairs": true};
     } else if (input.isPressed(Key.C)) {
         input.removeKey(Key.C);
