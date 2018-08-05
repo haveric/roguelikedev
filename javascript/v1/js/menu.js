@@ -54,6 +54,8 @@ function renderInventoryMenu(canvasState, header, player, inventoryWidth) {
                 options.push("{0} (on main hand)".format(item.name));
             } else if (player.equipment.isEquippedSlot(item, EquipmentSlot.OFF_HAND)) {
                 options.push("{0} (on off hand)".format(item.name));
+            } else if (player.equipment.isEquippedSlot(item, EquipmentSlot.RING)) {
+                options.push("{0} (on finger)".format(item.name));
             } else {
                 options.push(item.name);
             }

@@ -196,7 +196,10 @@
 
             entities.renderMap(asciiMap, gameMap, fovMap, canvasState);
             if (gameState == GameStates.TARGETING) {
-                var radius = targetingItem.functionArgs.radius || 1;
+                var radius = 0;
+                if (targetingItem.functionArgs && targetingItem.functionArgs.radius) {
+                    radius = targetingItem.functionArgs.radius + player.equipment.getMagicBonus();
+                }
                 entities.renderTargeting(asciiMap, gameMap, fovMap, canvasState, input.mousePosition, radius);
             }
             entities.renderAll(asciiMap, gameMap, fovMap, canvasState);

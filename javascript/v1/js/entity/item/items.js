@@ -86,3 +86,33 @@ var Torch = function(x, y) {
 }
 Torch.prototype = new Item();
 Torch.prototype.constructor = Torch;
+
+var RingOfLight = function(x, y) {
+    Item.call(this, x, y);
+    this.character = "o";
+    this.color = "#ffb732";
+    this.name = "Ring of Light";
+    this.equippable = new Equippable(EquipmentSlot.RING, 0, 0, 0, 2);
+}
+RingOfLight.prototype = new Item();
+RingOfLight.prototype.constructor = RingOfLight;
+
+var RingOfHealth = function(x, y) {
+    Item.call(this, x, y);
+    this.character = "o";
+    this.color = "#cc0000";
+    this.name = "Ring of Health";
+    this.equippable = new Equippable(EquipmentSlot.RING, 0, 0, 20);
+}
+RingOfHealth.prototype = new Item();
+RingOfHealth.prototype.constructor = RingOfHealth;
+
+var RingOfMagic = function(x, y) {
+    Item.call(this, x, y);
+    this.character = "o";
+    this.color = "#0000cc";
+    this.name = "Ring of Magic";
+    this.equippable = new Equippable(EquipmentSlot.RING, 0, 0, 0, 0, 1);
+}
+RingOfMagic.prototype = new Item();
+RingOfMagic.prototype.constructor = RingOfMagic;

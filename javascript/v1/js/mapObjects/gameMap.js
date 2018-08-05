@@ -127,10 +127,17 @@ GameMap.prototype.placeEntities = function(room, entities) {
         "torch": Random.fromDungeonLevel([[10, 2]], this.dungeonLevel),
         "sword": Random.fromDungeonLevel([[5, 4]], this.dungeonLevel),
         "shield": Random.fromDungeonLevel([[15, 8]], this.dungeonLevel),
+        "ring": Random.fromDungeonLevel([[1, 2], [2, 3], [5,4], [10,6], [20,8]], this.dungeonLevel),
         "lightningScroll": Random.fromDungeonLevel([[25, 4]], this.dungeonLevel),
         "fireballScroll": Random.fromDungeonLevel([[25, 6]], this.dungeonLevel),
         "confusionScroll": Random.fromDungeonLevel([[10, 2]], this.dungeonLevel)
     };
+
+    var ringChances = {
+        "light": 10,
+        "health": 5,
+        "magic": 1
+    }
 
     for (var i = 0; i < numMonsters; i++) {
         // Choose a random location in the room
@@ -184,6 +191,16 @@ GameMap.prototype.placeEntities = function(room, entities) {
                 item = new Sword(x, y);
             } else if (itemChoice == "shield") {
                 item = new Shield(x, y);
+            } else if (itemChoice == "ring") {
+                var ringChoice = Random.choiceFromDict(ringChances);
+
+                if (ringChoice == "light") {
+                    item = new RingOfLight(x, y);
+                } else if (ringChoice == "health") {
+                    item = new RingOfHealth(x, y);
+                } else if (ringChoice == "magic") {
+                    item = new RingOfMagic(x, y);
+                }
             } else if (itemChoice == "fireballScroll") {
                 item = new FireballScroll(x, y);
             } else if (itemChoice == "confusionScroll") {

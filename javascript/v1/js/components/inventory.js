@@ -32,6 +32,17 @@ Inventory.prototype.useItem = function(owner, item, args) {
         if (item.targeting && !(args.targetX || args.targetY)) {
             results.push({"targeting": item});
         } else {
+            if (owner.equipment && item.functionArgs) {
+                var magicBonus = owner.equipment.getMagicBonus();
+                if (item.functionArgs.radius) {
+                    item.functionArgs.radius += magicBonus;
+                }
+
+                if (item.functionArgs.damage) {
+                    item.functionArgs.damage *= (1 + magicBonus / 10);
+                    item.functionArgs.damage = Math.floor(item.functionArgs.damage);
+                }
+            }
             Object.assign(args, item.functionArgs);
 
             var itemUseResults = item.callUseFunction(args);

@@ -101,3 +101,15 @@ Equipment.prototype.getLightRadiusBonus = function() {
 
     return bonus;
 }
+
+Equipment.prototype.getMagicBonus = function() {
+    var bonus = 0;
+
+    for (var item of this.getAllItems()) {
+        if (item) {
+            bonus += item.equippable.magicBonus;
+        }
+    }
+
+    return bonus;
+}
