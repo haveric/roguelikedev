@@ -124,6 +124,7 @@ GameMap.prototype.placeEntities = function(room, entities) {
     };
     var itemChances = {
         "healingPotion": 35,
+        "torch": Random.fromDungeonLevel([[10, 2]], this.dungeonLevel),
         "sword": Random.fromDungeonLevel([[5, 4]], this.dungeonLevel),
         "shield": Random.fromDungeonLevel([[15, 8]], this.dungeonLevel),
         "lightningScroll": Random.fromDungeonLevel([[25, 4]], this.dungeonLevel),
@@ -177,6 +178,8 @@ GameMap.prototype.placeEntities = function(room, entities) {
             var item;
             if (itemChoice == "healingPotion") {
                 item = new HealingPotion(x, y);
+            } else if (itemChoice == "torch") {
+                item = new Torch(x, y);
             } else if (itemChoice == "sword") {
                 item = new Sword(x, y);
             } else if (itemChoice == "shield") {

@@ -191,7 +191,7 @@
             }
         } else {
             if (fovRecompute) {
-                fovMap.computeFov(player.x, player.y, player.lightRadius, constants.FOV_LIGHT_WALLS);
+                fovMap.computeFov(player.x, player.y, player.getLightRadius(), constants.FOV_LIGHT_WALLS);
             }
 
             entities.renderMap(asciiMap, gameMap, fovMap, canvasState);

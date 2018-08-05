@@ -12,7 +12,7 @@ var Fighter = function(x, y, hp, defense, power, xp) {
     this.xp = xp || 0;
     this.equipment = null;
 
-    this.lightRadius = 10;
+    this.lightRadius = 5;
 }
 Fighter.prototype = new Entity();
 Fighter.prototype.constructor = Fighter;
@@ -42,6 +42,15 @@ Fighter.prototype.getDefense = function() {
     }
 
     return this.defense + bonus;
+}
+
+Fighter.prototype.getLightRadius = function() {
+    var bonus = 0;
+    if (this.equipment) {
+        bonus += this.equipment.getLightRadiusBonus();
+    }
+
+    return this.lightRadius + bonus;
 }
 
 Fighter.prototype.takeDamage = function(damage) {

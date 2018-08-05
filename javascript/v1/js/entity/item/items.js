@@ -76,3 +76,13 @@ var Shield = function(x, y) {
 }
 Shield.prototype = new Item();
 Shield.prototype.constructor = Shield;
+
+var Torch = function(x, y) {
+    Item.call(this, x, y);
+    this.character = "¡";
+    this.color = "#ffb732";
+    this.name = "Torch";
+    this.equippable = new Equippable(EquipmentSlot.OFF_HAND, 0, 0, 0, 7);
+}
+Torch.prototype = new Item();
+Torch.prototype.constructor = Torch;

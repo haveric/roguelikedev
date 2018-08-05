@@ -89,3 +89,15 @@ Equipment.prototype.getDefenseBonus = function() {
 
     return bonus;
 }
+
+Equipment.prototype.getLightRadiusBonus = function() {
+    var bonus = 0;
+
+    for (var item of this.getAllItems()) {
+        if (item) {
+            bonus += item.equippable.lightRadiusBonus;
+        }
+    }
+
+    return bonus;
+}
