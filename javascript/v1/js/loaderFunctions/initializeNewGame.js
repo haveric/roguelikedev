@@ -23,7 +23,6 @@ function getGameVariables(constants) {
 
     var dagger = new Dagger(0, 0);
     player.inventory.addItem(dagger);
-    player.inventory.addItem(new FireballScroll(0,0));
     player.equipment.toggleEquip(dagger);
 
     var gameMap = new GameMap(constants.MAP_WIDTH, constants.MAP_HEIGHT);
