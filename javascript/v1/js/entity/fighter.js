@@ -68,13 +68,38 @@ Fighter.prototype.takeDamage = function(damage) {
 Fighter.prototype.attack = function(target) {
     var results = [];
 
-    var damage = this.getPower() - target.getDefense();
+    var critRoll = Random.getInt(1, 20);
+
+    var damage = 0;
+
+    var attackType = "";
+    var color = "#ffffff";
+    if (critRoll == 20) {
+        var majorCritRoll = Random.getInt(1, 20);
+        if (majorCritRoll == 20) {
+            damage = Random.getInt(Math.floor(this.getPower()*1.5), Math.floor(this.getPower() * 2.5)) - target.getDefense();
+            damage = Math.max(5, damage);
+            attackType = " critically";
+            color = "#ff0000";
+        } else {
+            damage = Random.getInt(this.getPower() + 1, this.getPower() * 2) - target.getDefense();
+            damage = Math.max(2, damage);
+            attackType = " strongly";
+            color = "#ff7f00";
+        }
+
+    } else if (critRoll == 0) {
+        damage = Random.getInt(0, this.getPower()) - target.getDefense();
+        attackType = " weakly";
+    } else {
+        damage = this.getPower() - target.getDefense();
+    }
 
     if (damage > 0) {
-        results.push({"message": new Message("{0} attacks {1} for {2} hit points.".format(this.name.toUpperCase(), target.name, damage), "#ffffff")});
+        results.push({"message": new Message("{0}{1} attacks {2} for {3} hit points.".format(this.name.toUpperCase(), attackType, target.name, damage), color)});
         results = results.concat(target.takeDamage(damage));
     } else {
-        results.push({"message": new Message("{0} attacks {1} but does no damage.".format(this.name.toUpperCase(), target.name), "#ffffff")});
+        results.push({"message": new Message("{0}{1} attacks {2} but does no damage.".format(this.name.toUpperCase(), attackType, target.name), color)});
     }
 
     return results;
