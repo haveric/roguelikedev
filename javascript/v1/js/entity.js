@@ -144,7 +144,6 @@ Entity.prototype.moveTowards = function(targetX, targetY, gameMap, entities) {
 
 Entity.prototype.moveAStar = function(target, entities, gameMap) {
     var astar = new AStarMap(gameMap);
-
     astar.init(this, target, entities, gameMap);
 
     var path = astar.search(this, target);

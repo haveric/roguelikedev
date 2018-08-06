@@ -8,6 +8,8 @@ var AStarTile = function(x, y, blocked) {
     this.f = null;
     this.g = null;
     this.parent = null;
+    this.visited = false;
+    this.closed = false;
 }
 
 var AStarMap = function(gameMap) {
@@ -34,10 +36,9 @@ AStarMap.prototype.search = function(self, target) {
     var start = this.tiles[self.x][self.y];
     var goal = this.tiles[target.x][target.y];
 
-    var closed = [];
-
     var open = [];
     open.push(start);
+    start.visited = true;
 
     while (open.length > 0) {
         var lowIndex = 0;
@@ -49,7 +50,6 @@ AStarMap.prototype.search = function(self, target) {
         }
 
         var currentNode = open[lowIndex];
-
 
         // End State
         if (currentNode == goal) {
@@ -64,19 +64,20 @@ AStarMap.prototype.search = function(self, target) {
 
         open.splice(open.indexOf(currentNode), 1);
 
-        closed.push(currentNode);
+        currentNode.closed = true;
 
         var neighbors = this.getNeighbors(currentNode);
 
         for (var neighbor of neighbors) {
-            if (closed.indexOf(neighbor) > -1 || neighbor.blocked) {
+            if (neighbor.closed || neighbor.blocked) {
                 continue;
             }
 
-            var g = currentNode.g + this.distanceBetween(currentNode, neighbor);
+            var g = currentNode.g + 1;
 
-            if (open.indexOf(neighbor) == -1) {
+            if (!neighbor.visited) {
                 open.push(neighbor);
+                neighbor.visited = true;
             } else if (g >= neighbor.g) {
                 continue;
             }
@@ -91,10 +92,7 @@ AStarMap.prototype.search = function(self, target) {
 }
 
 AStarMap.prototype.distanceBetween = function(tile1, tile2) {
-    var xDist = Math.abs(tile1.x - tile2.x);
-    var yDist = Math.abs(tile1.y - tile2.y);
-
-    return Math.max(xDist, yDist);
+    return Util.getTileDistance(tile1.x, tile1.y, tile2.x, tile2.y);
 }
 
 AStarMap.prototype.calculateHeuristic = function(tile, goal) {
@@ -107,39 +105,41 @@ AStarMap.prototype.getNeighbors = function(currentNode) {
     var x = currentNode.x;
     var y = currentNode.y;
 
-    if (this.tiles[x-1]) {
-        if (this.tiles[x-1][y-1]) {
-            neighbors.push(this.tiles[x-1][y-1]);
+    var xMinusOne = this.tiles[x-1];
+    if (xMinusOne) {
+        if (xMinusOne[y-1]) {
+            neighbors.push(xMinusOne[y-1]);
         }
-        if (this.tiles[x-1][y]) {
-            neighbors.push(this.tiles[x-1][y]);
+        if (xMinusOne[y]) {
+            neighbors.push(xMinusOne[y]);
         }
-        if (this.tiles[x-1][y+1]) {
-            neighbors.push(this.tiles[x-1][y+1]);
-        }
-    }
-    if (this.tiles[x]) {
-        if (this.tiles[x][y-1]) {
-            neighbors.push(this.tiles[x][y-1]);
-        }
-        if (this.tiles[x][y+1]) {
-            neighbors.push(this.tiles[x][y+1]);
+        if (xMinusOne[y+1]) {
+            neighbors.push(xMinusOne[y+1]);
         }
     }
-    if (this.tiles[x+1]) {
-        if (this.tiles[x+1][y-1]) {
-            neighbors.push(this.tiles[x+1][y-1]);
+    var xPlusZero = this.tiles[x];
+    if (xPlusZero) {
+        if (xPlusZero[y-1]) {
+            neighbors.push(xPlusZero[y-1]);
         }
-        if (this.tiles[x+1][y]) {
-            neighbors.push(this.tiles[x+1][y]);
+        if (xPlusZero[y+1]) {
+            neighbors.push(xPlusZero[y+1]);
         }
-        if (this.tiles[x+1][y+1]) {
-            neighbors.push(this.tiles[x+1][y+1]);
+    }
+    var xPlusOne = this.tiles[x+1];
+    if (xPlusOne) {
+        if (xPlusOne[y-1]) {
+            neighbors.push(xPlusOne[y-1]);
+        }
+        if (xPlusOne[y]) {
+            neighbors.push(xPlusOne[y]);
+        }
+        if (xPlusOne[y+1]) {
+            neighbors.push(xPlusOne[y+1]);
         }
     }
 
     Util.shuffleArray(neighbors);
 
     return neighbors;
-
 }
