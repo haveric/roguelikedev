@@ -166,7 +166,7 @@ Resurrect.NamespaceResolver.prototype.getPrototype = function(name) {
  */
 Resurrect.NamespaceResolver.prototype.getName = function(object) {
     var constructor = object.constructor.name;
-    if (constructor == null || constructor == undefined) { // IE
+    if (constructor == null) { // IE
         var funcPattern = /^\s*function\s*([A-Za-z0-9_$]*)/;
         constructor = funcPattern.exec(object.constructor)[1];
     }
