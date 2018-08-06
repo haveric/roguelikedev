@@ -1,25 +1,25 @@
 "use strict";
 
-var Entities = function() {
+var EntityManager = function() {
     this.entities = [];
 }
 
-Entities.prototype.add = function(entity) {
+EntityManager.prototype.add = function(entity) {
     this.entities.push(entity);
 }
 
-Entities.prototype.remove = function(entity) {
+EntityManager.prototype.remove = function(entity) {
     var index = this.entities.indexOf(entity);
     if (index > -1) {
         this.entities.splice(index, 1)
     }
 }
 
-Entities.prototype.removeAll = function() {
+EntityManager.prototype.removeAll = function() {
     this.entities = [];
 }
 
-Entities.prototype.renderMap = function(asciiMap, gameMap, fovMap, canvasState) {
+EntityManager.prototype.renderMap = function(asciiMap, gameMap, fovMap, canvasState) {
     for (var x = 0; x < gameMap.width; x++) {
         for (var y = 0; y < gameMap.height; y++) {
             var visibleDistance = fovMap.tiles[x][y].fovDistance;
@@ -44,7 +44,7 @@ Entities.prototype.renderMap = function(asciiMap, gameMap, fovMap, canvasState) 
     }
 }
 
-Entities.prototype.renderTargeting = function(asciiMap, gameMap, fovMap, canvasState, mousePosition, radius) {
+EntityManager.prototype.renderTargeting = function(asciiMap, gameMap, fovMap, canvasState, mousePosition, radius) {
     var mx = Math.floor(mousePosition.x / (10 * canvasState.scale));
     var my = Math.floor(mousePosition.y / (10 * canvasState.scale));
 
@@ -67,7 +67,7 @@ Entities.prototype.renderTargeting = function(asciiMap, gameMap, fovMap, canvasS
     }
 }
 
-Entities.prototype.renderAll = function(asciiMap, gameMap, fovMap, canvasState) {
+EntityManager.prototype.renderAll = function(asciiMap, gameMap, fovMap, canvasState) {
     var entitiesInRenderOrder = this.entities.sort(function(e1, e2) {
         return e1.renderOrder - e2.renderOrder;
     });
@@ -77,7 +77,7 @@ Entities.prototype.renderAll = function(asciiMap, gameMap, fovMap, canvasState) 
     });
 }
 
-Entities.prototype.getBlockingEntitiesAtLocation = function(x, y) {
+EntityManager.prototype.getBlockingEntitiesAtLocation = function(x, y) {
     var blockingEntity = null;
     for (var entity of this.entities) {
         if (entity.blocks && entity.x == x && entity.y == y) {
@@ -89,7 +89,7 @@ Entities.prototype.getBlockingEntitiesAtLocation = function(x, y) {
     return blockingEntity;
 }
 
-Entities.prototype.getNamesUnderMouse = function(mousePosition, fovMap, scale) {
+EntityManager.prototype.getNamesUnderMouse = function(mousePosition, fovMap, scale) {
     var x = Math.floor(mousePosition.x / (10 * scale));
     var y = Math.floor(mousePosition.y / (10 * scale));
 
@@ -126,7 +126,7 @@ Entity.prototype.move = function(gameMap, dx, dy) {
     }
 }
 
-Entity.prototype.moveTowards = function(targetX, targetY, gameMap, entities) {
+Entity.prototype.moveTowards = function(targetX, targetY, gameMap, entityManager) {
     var dx = targetX - this.x;
     var dy = targetY - this.y;
     var distance = Math.sqrt(dx * dx + dy * dy);
@@ -137,7 +137,7 @@ Entity.prototype.moveTowards = function(targetX, targetY, gameMap, entities) {
     var checkX = this.x + dx;
     var checkY = this.y + dy;
 
-    if (!gameMap.isBlocked(checkX, checkY) && !entities.getBlockingEntitiesAtLocation(checkX, checkY)) {
+    if (!gameMap.isBlocked(checkX, checkY) && !entityManager.getBlockingEntitiesAtLocation(checkX, checkY)) {
         this.move(gameMap, dx, dy);
     }
 }

@@ -18,7 +18,7 @@ function heal(args) {
 
 function castLightning(args) {
     var caster = args.caster;
-    var entities = args.entities;
+    var entityManager = args.entityManager;
     var fovMap = args.fovMap;
     var damage = args.damage;
     var maxRange = args.maxRange;
@@ -28,9 +28,9 @@ function castLightning(args) {
     var target = null;
     var closestDistance = maxRange + 1;
 
-    for (var entity of entities.entities) {
+    for (var entity of entityManager.entities) {
         if (entity instanceof Fighter && entity.hp > 0 && entity != caster && fovMap.isPointInFov(entity.x, entity.y)) {
-            distance = caster.distanceTo(entity);
+            var distance = caster.distanceTo(entity);
 
             if (distance < closestDistance) {
                 target = entity;
@@ -50,7 +50,7 @@ function castLightning(args) {
 }
 
 function castFireball(args) {
-    var entities = args.entities;
+    var entityManager = args.entityManager;
     var fovMap = args.fovMap;
     var damage = args.damage;
     var radius = args.radius;
@@ -66,7 +66,7 @@ function castFireball(args) {
 
     results.push({"consumed": true, "message": new Message("The fireball explodes, burning everything within {0} tiles!".format(radius), "#FF7F00")});
 
-    for (var entity of entities.entities) {
+    for (var entity of entityManager.entities) {
         if (entity instanceof Fighter && entity.hp > 0 && entity.distanceToPoint(targetX, targetY) <= radius) {
             results.push({"message": new Message("The {0} gets burned for {1} hit points.".format(entity.name, damage))});
             results = results.concat(entity.takeDamage(damage));
@@ -77,7 +77,7 @@ function castFireball(args) {
 }
 
 function castConfuse(args) {
-    var entities = args.entities;
+    var entityManager = args.entityManager;
     var fovMap = args.fovMap;
     var targetX = args.targetX;
     var targetY = args.targetY;
@@ -90,7 +90,7 @@ function castConfuse(args) {
     }
 
     var entityFound = false;
-    for (var entity of entities.entities) {
+    for (var entity of entityManager.entities) {
         if (entity.ai && entity.x == targetX && entity.y == targetY) {
             var confusedAI = new ConfusedMonster(entity.ai, 10);
 

@@ -2,12 +2,12 @@
 
 var necromancer = new Resurrect();
 
-function saveGame(player, entities, gameMap, messageLog, gameState) {
-    var playerIndex = entities.entities.indexOf(player);
+function saveGame(player, entityManager, gameMap, messageLog, gameState) {
+    var playerIndex = entityManager.entities.indexOf(player);
 
     var save = {
         "playerIndex": playerIndex,
-        "entitiesList": entities.entities,
+        "entitiesList": entityManager.entities,
         "gameMap": gameMap,
         "messageLog": messageLog,
         "gameState": gameState
@@ -24,12 +24,12 @@ function loadGame() {
         load = necromancer.resurrect(savegame);
 
         var playerIndex = load.playerIndex;
-        var entities = new Entities();
-        entities.entities = load.entitiesList;
+        var entityManager = new EntityManager();
+        entityManager.entities = load.entitiesList;
 
-        var player = entities.entities[playerIndex];
+        var player = entityManager.entities[playerIndex];
 
-        load.entities = entities;
+        load.entityManager = entityManager;
         load.player = player;
     }
 

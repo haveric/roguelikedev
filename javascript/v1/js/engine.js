@@ -8,7 +8,7 @@
     var constants = getConstants(asciiMap);
 
     var player,
-        entities,
+        entityManager,
         gameMap,
         messageLog,
         gameState;
@@ -46,7 +46,7 @@
             } else if (newGame) {
                 var gameVariables = getGameVariables(constants);
                 player = gameVariables.player;
-                entities = gameVariables.entities;
+                entityManager = gameVariables.entityManager;
                 gameMap = gameVariables.gameMap;
                 messageLog = gameVariables.messageLog;
                 gameState = GameStates.PLAYERS_TURN;
@@ -57,7 +57,7 @@
 
                 if (load) {
                     player = load.player;
-                    entities = load.entities;
+                    entityManager = load.entityManager;
                     gameMap = load.gameMap;
                     messageLog = load.messageLog;
                     gameState = load.gameState;
@@ -75,9 +75,9 @@
             handleMouseActions(mouseActions);
 
             if (gameState == GameStates.ENEMY_TURN) {
-                for (var entity of entities.entities) {
+                for (var entity of entityManager.entities) {
                     if (entity.ai) {
-                        var enemyTurnResults = entity.ai.takeTurn(entity, player, fovMap, gameMap, entities);
+                        var enemyTurnResults = entity.ai.takeTurn(entity, player, fovMap, gameMap, entityManager);
 
                         for (var enemyTurnResult of enemyTurnResults) {
                             var message = enemyTurnResult.message;
@@ -194,15 +194,15 @@
                 fovMap.computeFov(player.x, player.y, player.getLightRadius(), constants.FOV_LIGHT_WALLS);
             }
 
-            entities.renderMap(asciiMap, gameMap, fovMap, canvasState);
+            entityManager.renderMap(asciiMap, gameMap, fovMap, canvasState);
             if (gameState == GameStates.TARGETING) {
                 var radius = 0;
                 if (targetingItem.functionArgs && targetingItem.functionArgs.radius) {
                     radius = targetingItem.functionArgs.radius + player.equipment.getMagicBonus();
                 }
-                entities.renderTargeting(asciiMap, gameMap, fovMap, canvasState, input.mousePosition, radius);
+                entityManager.renderTargeting(asciiMap, gameMap, fovMap, canvasState, input.mousePosition, radius);
             }
-            entities.renderAll(asciiMap, gameMap, fovMap, canvasState);
+            entityManager.renderAll(asciiMap, gameMap, fovMap, canvasState);
 
             renderBar(canvasState, 10, constants.PANEL_Y, constants.HP_BAR_WIDTH, "HP", player.hp, player.maxHp, "#FF7373", "#BF0000");
 
@@ -212,7 +212,7 @@
 
             canvasState.fillText("Dungeon Level: {0}".format(gameMap.dungeonLevel), 10, constants.PANEL_Y + 20);
 
-            var names = entities.getNamesUnderMouse(input.mousePosition, fovMap, canvasState.scale);
+            var names = entityManager.getNamesUnderMouse(input.mousePosition, fovMap, canvasState.scale);
             if (names != "") {
                 drawText(canvasState, names, 10, constants.PANEL_Y - 10, "#E4E4E4", "start", "middle");
             }
@@ -244,7 +244,7 @@
         var destX = player.x + x;
         var destY = player.y + y;
         if (gameState == GameStates.PLAYERS_TURN && !gameMap.isBlocked(destX, destY)) {
-            var target = entities.getBlockingEntitiesAtLocation(destX, destY);
+            var target = entityManager.getBlockingEntitiesAtLocation(destX, destY);
 
             if (target != null) {
                 var attackResults = player.attack(target);
@@ -265,7 +265,7 @@
         if (gameState == GameStates.PLAYERS_TURN) {
 
             var foundItem = false;
-            for (var entity of entities.entities) {
+            for (var entity of entityManager.entities) {
                 if (entity instanceof Item && entity.x == player.x && entity.y == player.y) {
                     var pickupResults = player.inventory.addItem(entity);
                     playerTurnResults = playerTurnResults.concat(pickupResults);
@@ -290,7 +290,7 @@
             var item = player.inventory.items[inventoryIndex];
 
             if (gameState == GameStates.SHOW_INVENTORY) {
-                playerTurnResults = playerTurnResults.concat(player.inventory.useItem(player, item, {"entities": entities, "fovMap": fovMap}));
+                playerTurnResults = playerTurnResults.concat(player.inventory.useItem(player, item, {"entityManager": entityManager, "fovMap": fovMap}));
             } else if (gameState == GameStates.DROP_INVENTORY) {
                 playerTurnResults = playerTurnResults.concat(player.inventory.dropItem(player, item));
             }
@@ -303,9 +303,9 @@
         if (gameState == GameStates.PLAYERS_TURN) {
 
             var foundStairs = false;
-            for (var entity of entities.entities) {
+            for (var entity of entityManager.entities) {
                 if (entity instanceof Stairs && entity.x == player.x && entity.y == player.y) {
-                    gameMap.nextFloor(player, entities, messageLog, constants);
+                    gameMap.nextFloor(player, entityManager, messageLog, constants);
                     fovMap = new FovMap(gameMap);
                     fovRecompute = true;
 
@@ -356,7 +356,7 @@
         } else if (gameState == GameStates.TARGETING) {
             playerTurnResults.push({"targetingCancelled": true});
         } else {
-            saveGame(player, entities, gameMap, messageLog, gameState);
+            saveGame(player, entityManager, gameMap, messageLog, gameState);
             showMainMenu = true;
             return;
         }
@@ -372,7 +372,7 @@
                 var targetX = actions.leftClick[0];
                 var targetY = actions.leftClick[1];
 
-                var itemUseResults = player.inventory.useItem(player, targetingItem, {"entities": entities, "fovMap": fovMap, "targetX": targetX, "targetY": targetY});
+                var itemUseResults = player.inventory.useItem(player, targetingItem, {"entityManager": entityManager, "fovMap": fovMap, "targetX": targetX, "targetY": targetY});
                 playerTurnResults = playerTurnResults.concat(itemUseResults);
             } else if (actions.rightClick) {
                 playerTurnResults.push({"targetingCancelled": true});
@@ -427,7 +427,7 @@
             }
 
             if (itemAdded) {
-                entities.remove(itemAdded);
+                entityManager.remove(itemAdded);
                 gameState = GameStates.ENEMY_TURN;
             }
 
@@ -436,7 +436,7 @@
             }
 
             if (itemDropped) {
-                entities.add(itemDropped);
+                entityManager.add(itemDropped);
                 gameState = GameStates.ENEMY_TURN;
             }
 

@@ -24,7 +24,7 @@ GameMap.prototype.initTiles = function() {
     return tiles;
 }
 
-GameMap.prototype.makeMap = function(mapWidth, mapHeight, player, entities) {
+GameMap.prototype.makeMap = function(mapWidth, mapHeight, player, entityManager) {
     var rooms = [];
     var numRooms = 0;
 
@@ -80,7 +80,7 @@ GameMap.prototype.makeMap = function(mapWidth, mapHeight, player, entities) {
                 }
             }
 
-            this.placeEntities(newRoom, entities);
+            this.placeEntities(newRoom, entityManager);
 
             rooms.push(newRoom);
             numRooms += 1;
@@ -88,7 +88,7 @@ GameMap.prototype.makeMap = function(mapWidth, mapHeight, player, entities) {
     }
 
     var stairs = new Stairs(lastRoomCenterX, lastRoomCenterY);
-    entities.add(stairs);
+    entityManager.add(stairs);
 }
 
 GameMap.prototype.createRoom = function(roomRect) {
@@ -111,7 +111,7 @@ GameMap.prototype.createVerticalTunnel = function(y1, y2, x) {
     }
 }
 
-GameMap.prototype.placeEntities = function(room, entities) {
+GameMap.prototype.placeEntities = function(room, entityManager) {
     var maxMonstersPerRoom = Random.fromDungeonLevel([[2, 1], [3, 4], [5, 6]], this.dungeonLevel);
     var maxItemPerRoom = Random.fromDungeonLevel([[1, 1], [2, 4]], this.dungeonLevel);
 
@@ -145,7 +145,7 @@ GameMap.prototype.placeEntities = function(room, entities) {
         var y = Random.getInt(room.y1 + 1, room.y2 - 1);
 
         var entityExistsAtLocation = false;
-        for (var entity of entities.entities) {
+        for (var entity of entityManager.entities) {
             if (entity.x == x && entity.y == y) {
                 entityExistsAtLocation = true;
                 break;
@@ -162,7 +162,7 @@ GameMap.prototype.placeEntities = function(room, entities) {
                 monster = new Troll(x, y);
             }
 
-            entities.add(monster);
+            entityManager.add(monster);
         }
     }
 
@@ -172,7 +172,7 @@ GameMap.prototype.placeEntities = function(room, entities) {
         var y = Random.getInt(room.y1 + 1, room.y2 - 1);
 
         var entityExistsAtLocation = false;
-        for (var entity of entities.entities) {
+        for (var entity of entityManager.entities) {
             if (entity.x == x && entity.y == y) {
                 entityExistsAtLocation = true;
                 break;
@@ -209,7 +209,7 @@ GameMap.prototype.placeEntities = function(room, entities) {
                 item = new LightningScroll(x, y);
             }
 
-            entities.add(item);
+            entityManager.add(item);
         }
     }
 }
@@ -225,13 +225,13 @@ GameMap.prototype.isBlocked = function(x, y) {
     return blocked;
 }
 
-GameMap.prototype.nextFloor = function(player, entities, messageLog, constants) {
+GameMap.prototype.nextFloor = function(player, entityManager, messageLog, constants) {
     this.dungeonLevel += 1;
 
-    entities.removeAll();
-    entities.add(player);
+    entityManager.removeAll();
+    entityManager.add(player);
     this.tiles = this.initTiles();
-    this.makeMap(constants.MAP_WIDTH, constants.MAP_HEIGHT, player, entities);
+    this.makeMap(constants.MAP_WIDTH, constants.MAP_HEIGHT, player, entityManager);
 
     player.heal(Math.floor(player.maxHp / 2));
 

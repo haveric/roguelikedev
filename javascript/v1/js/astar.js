@@ -16,7 +16,7 @@ var AStarMap = function(gameMap) {
     this.tiles = Util.create2dArray(gameMap.width);
 }
 
-AStarMap.prototype.init = function(self, target, entities, gameMap) {
+AStarMap.prototype.init = function(self, target, entityManager, gameMap) {
     for (var x = 0; x < gameMap.width; x++) {
         for (var y = 0; y < gameMap.height; y++) {
             var gameTile = gameMap.tiles[x][y];
@@ -25,7 +25,7 @@ AStarMap.prototype.init = function(self, target, entities, gameMap) {
         }
     }
 
-    for (var entity of entities.entities) {
+    for (var entity of entityManager.entities) {
         if (entity.blocks && entity != self && entity != target) {
             this.tiles[entity.x][entity.y].blocked = true;
         }

@@ -17,18 +17,18 @@ function getConstants(asciiMap) {
 }
 
 function getGameVariables(constants) {
-    var entities = new Entities();
+    var entityManager = new EntityManager();
 
     var player = new Player(0, 0);
 
-    entities.add(player);
+    entityManager.add(player);
 
     var dagger = new Dagger(0, 0);
     player.inventory.addItem(dagger);
     player.equipment.toggleEquip(dagger);
 
     var gameMap = new GameMap(constants.MAP_WIDTH, constants.MAP_HEIGHT);
-    gameMap.makeMap(constants.MAP_WIDTH, constants.MAP_HEIGHT, player, entities);
+    gameMap.makeMap(constants.MAP_WIDTH, constants.MAP_HEIGHT, player, entityManager);
 
     var messageLog = new MessageLog();
 
@@ -36,7 +36,7 @@ function getGameVariables(constants) {
 
     return {
         "player": player,
-        "entities": entities,
+        "entityManager": entityManager,
         "gameMap": gameMap,
         "messageLog": messageLog,
         "gameState": gameState
