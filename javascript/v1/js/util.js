@@ -18,6 +18,14 @@ function () {
     return str;
 };
 
+if (!Object.values) {
+    Object.values = function(obj) {
+        Object.keys(obj).map(function(e) {
+            return obj[e];
+        });
+    }
+}
+
 var Util = {
     create2dArray: function(rows) {
         var array = [];
