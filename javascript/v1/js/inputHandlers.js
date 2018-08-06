@@ -1,3 +1,5 @@
+"use strict";
+
 function handleKeyInput(input, gameState) {
     if (gameState == GameStates.PLAYERS_TURN) {
         return handlePlayerTurnInput(input);

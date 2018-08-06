@@ -1,3 +1,5 @@
+"use strict";
+
 var Inventory = function(capacity) {
     this.capacity = capacity;
     this.items = [];

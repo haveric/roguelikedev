@@ -1,3 +1,5 @@
+"use strict";
+
 function getConstants(asciiMap) {
     var screenWidth = 80;
     var screenHeight = 50;

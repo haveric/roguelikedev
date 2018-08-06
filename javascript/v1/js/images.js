@@ -1,3 +1,5 @@
+"use strict";
+
 var TextureManager = function() {
     this.textures = [];
     //this.preloaded = false;

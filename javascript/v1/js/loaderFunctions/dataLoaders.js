@@ -1,3 +1,5 @@
+"use strict";
+
 var necromancer = new Resurrect();
 
 function saveGame(player, entities, gameMap, messageLog, gameState) {

@@ -1,3 +1,5 @@
+"use strict";
+
 function heal(args) {
     var caster = args.caster;
     var amount = args.amount;
