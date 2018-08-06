@@ -90,15 +90,16 @@ var Random = {
 
     choiceIndex: function(chances) {
         var sum = 0;
-        for (var chance of chances) {
-            sum += chance;
+        for (var i = 0; i < chances.length; i++) {
+            sum += chances[i];
         }
 
         var randomChance = Random.getInt(1, sum);
         var runningSum = 0;
         var choice = 0;
 
-        for (var w of chances) {
+        for (var i = 0; i < chances.length; i++) {
+            var w = chances[i];
             runningSum += w;
 
             if (randomChance <= runningSum) {

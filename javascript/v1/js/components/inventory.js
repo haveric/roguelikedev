@@ -49,7 +49,8 @@ Inventory.prototype.useItem = function(owner, item, args) {
 
             var itemUseResults = item.callUseFunction(args);
 
-            for (var itemUseResult of itemUseResults) {
+            for (var i = 0; i < itemUseResults.length; i++) {
+                var itemUseResult = itemUseResults[i];
                 if (itemUseResult.consumed) {
                     this.removeItem(item);
                 }

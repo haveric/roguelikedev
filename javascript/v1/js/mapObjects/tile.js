@@ -1,8 +1,8 @@
 "use strict";
 
-var Tile = function(blocked, blockSight = false) {
+var Tile = function(blocked, blockSight) {
     this.blocked = blocked;
-    this.blockSight = blocked || blockSight;
+    this.blockSight = blocked || blockSight || false;
     this.explored = false;
 }
 
@@ -14,7 +14,7 @@ Tile.prototype.setBlocked = function(blocked) {
     this.blockSight = blocked;
 }
 
-var FovTile = function(blocked, blockSight = false, fovDistance) {
+var FovTile = function(blocked, blockSight, fovDistance) {
     Tile.call(this, blocked, blockSight);
     this.fovDistance = fovDistance;
 }

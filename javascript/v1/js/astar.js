@@ -25,7 +25,8 @@ AStarMap.prototype.init = function(self, target, entityManager, gameMap) {
         }
     }
 
-    for (var entity of entityManager.entities) {
+    for (var i = 0; i < entityManager.entities.length; i++) {
+        var entity = entityManager.entities[i];
         if (entity.blocks && entity != self && entity != target) {
             this.tiles[entity.x][entity.y].blocked = true;
         }
@@ -68,7 +69,8 @@ AStarMap.prototype.search = function(self, target) {
 
         var neighbors = this.getNeighbors(currentNode);
 
-        for (var neighbor of neighbors) {
+        for (var i = 0; i < neighbors.length; i++) {
+            var neighbor = neighbors[i];
             if (neighbor.closed || neighbor.blocked) {
                 continue;
             }

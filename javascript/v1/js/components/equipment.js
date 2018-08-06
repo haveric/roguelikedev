@@ -13,7 +13,9 @@ Equipment.prototype.getAllItems = function() {
 Equipment.prototype.isEquipped = function(itemToCheck) {
     var isEquipped = false;
 
-    for (var item of this.getAllItems()) {
+    var allItems = this.getAllItems();
+    for (var i = 0; i < allItems.length; i++) {
+        var item = allItems[i];
         if (item == itemToCheck) {
             isEquipped = true;
             break;
@@ -57,7 +59,9 @@ Equipment.prototype.toggleEquip = function(item) {
 Equipment.prototype.getMaxHpBonus = function() {
     var bonus = 0;
 
-    for (var item of this.getAllItems()) {
+    var allItems = this.getAllItems();
+    for (var i = 0; i < allItems.length; i++) {
+        var item = allItems[i];
         if (item) {
             bonus += item.equippable.maxHpBonus;
         }
@@ -69,7 +73,9 @@ Equipment.prototype.getMaxHpBonus = function() {
 Equipment.prototype.getPowerBonus = function() {
     var bonus = 0;
 
-    for (var item of this.getAllItems()) {
+    var allItems = this.getAllItems();
+    for (var i = 0; i < allItems.length; i++) {
+        var item = allItems[i];
         if (item) {
             bonus += item.equippable.powerBonus;
         }
@@ -81,7 +87,9 @@ Equipment.prototype.getPowerBonus = function() {
 Equipment.prototype.getDefenseBonus = function() {
     var bonus = 0;
 
-    for (var item of this.getAllItems()) {
+    var allItems = this.getAllItems();
+    for (var i = 0; i < allItems.length; i++) {
+        var item = allItems[i];
         if (item) {
             bonus += item.equippable.defenseBonus;
         }
@@ -93,7 +101,9 @@ Equipment.prototype.getDefenseBonus = function() {
 Equipment.prototype.getLightRadiusBonus = function() {
     var bonus = 0;
 
-    for (var item of this.getAllItems()) {
+    var allItems = this.getAllItems();
+    for (var i = 0; i < allItems.length; i++) {
+        var item = allItems[i];
         if (item) {
             bonus += item.equippable.lightRadiusBonus;
         }
@@ -105,7 +115,9 @@ Equipment.prototype.getLightRadiusBonus = function() {
 Equipment.prototype.getMagicBonus = function() {
     var bonus = 0;
 
-    for (var item of this.getAllItems()) {
+    var allItems = this.getAllItems();
+    for (var i = 0; i < allItems.length; i++) {
+        var item = allItems[i];
         if (item) {
             bonus += item.equippable.magicBonus;
         }

@@ -79,7 +79,8 @@ EntityManager.prototype.renderAll = function(asciiMap, gameMap, fovMap, canvasSt
 
 EntityManager.prototype.getBlockingEntitiesAtLocation = function(x, y) {
     var blockingEntity = null;
-    for (var entity of this.entities) {
+    for (var i = 0; i < this.entities.length; i++) {
+        var entity = this.entities[i];
         if (entity.blocks && entity.x == x && entity.y == y) {
             blockingEntity = entity;
             break;
@@ -94,7 +95,8 @@ EntityManager.prototype.getNamesUnderMouse = function(mousePosition, fovMap, sca
     var y = Math.floor(mousePosition.y / (10 * scale));
 
     var names = "";
-    for (var entity of this.entities) {
+    for (var i = 0; i < this.entities.length; i++) {
+        var entity = this.entities[i];
         if (entity.x == x && entity.y == y && fovMap.isPointInFov(entity.x, entity.y)) {
             if (names != "") {
                 names += ", ";

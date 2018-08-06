@@ -75,11 +75,13 @@
             handleMouseActions(mouseActions);
 
             if (gameState == GameStates.ENEMY_TURN) {
-                for (var entity of entityManager.entities) {
+                for (var i = 0; i < entityManager.entities.length; i++) {
+                    var entity = entityManager.entities[i];
                     if (entity.ai) {
                         var enemyTurnResults = entity.ai.takeTurn(entity, player, fovMap, gameMap, entityManager);
 
-                        for (var enemyTurnResult of enemyTurnResults) {
+                        for (var j = 0; j < enemyTurnResults.length; j++) {
+                            var enemyTurnResult = enemyTurnResults[j];
                             var message = enemyTurnResult.message;
                             var deadEntity = enemyTurnResult.dead;
 
@@ -265,7 +267,8 @@
         if (gameState == GameStates.PLAYERS_TURN) {
 
             var foundItem = false;
-            for (var entity of entityManager.entities) {
+            for (var i = 0; i < entityManager.entities.length; i++) {
+                var entity = entityManager.entities[i];
                 if (entity instanceof Item && entity.x == player.x && entity.y == player.y) {
                     var pickupResults = player.inventory.addItem(entity);
                     playerTurnResults = playerTurnResults.concat(pickupResults);
@@ -303,7 +306,8 @@
         if (gameState == GameStates.PLAYERS_TURN) {
 
             var foundStairs = false;
-            for (var entity of entityManager.entities) {
+            for (var i = 0; i < entityManager.entities.length; i++) {
+                var entity = entityManager.entities[i];
                 if (entity instanceof Stairs && entity.x == player.x && entity.y == player.y) {
                     gameMap.nextFloor(player, entityManager, messageLog, constants);
                     fovMap = new FovMap(gameMap);
@@ -384,7 +388,8 @@
 
 
     function handleTurnResults(playerTurnResults) {
-        for (var playerTurnResult of playerTurnResults) {
+        for (var i = 0; i < playerTurnResults.length; i++) {
+            var playerTurnResult = playerTurnResults[i];
             var message = playerTurnResult.message;
             var deadEntity = playerTurnResult.dead;
             var itemAdded = playerTurnResult.itemAdded;
@@ -443,7 +448,8 @@
             if (equip) {
                 var equipResults = player.equipment.toggleEquip(equip);
 
-                for (var equipResult of equipResults) {
+                for (var i = 0; i < equipResults.length; i++) {
+                    var equipResult = equipResults[i];
                     var equipped = equipResult.equipped;
                     var dequipped = equipResult.dequipped;
 

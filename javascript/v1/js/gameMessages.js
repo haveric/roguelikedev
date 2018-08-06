@@ -1,8 +1,8 @@
 "use strict";
 
-var Message = function(text, color="#ffffff") {
+var Message = function(text, color) {
     this.text = text;
-    this.color = color;
+    this.color = color || "#ffffff";
 }
 
 var MessageLog = function() {
@@ -22,10 +22,12 @@ MessageLog.prototype.addMessage = function(message) {
 MessageLog.prototype.render = function(canvasState) {
     if (this.updateLines) {
         var updatedMessages = [];
-        for (var message of this.messages) {
+        for (var i = 0; i < this.messages.length; i++) {
+            var message = this.messages[i];
             var messageLines = Util.getTextLines(canvasState, message.text, this.width);
 
-            for (var line of messageLines) {
+            for (var j = 0; j < messageLines.length; j++) {
+                var line = messageLines[j];
                 if (updatedMessages.length == this.maxLines) {
                     updatedMessages.splice(0, 1);
                 }
@@ -38,7 +40,8 @@ MessageLog.prototype.render = function(canvasState) {
     }
 
     var y = this.y;
-    for (var message of this.messages) {
+    for (var i = 0; i < this.messages.length; i++) {
+        var message = this.messages[i];
         drawText(canvasState, message.text, this.x, y, message.color);
         y += 10;
     }

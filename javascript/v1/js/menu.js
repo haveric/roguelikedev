@@ -25,7 +25,8 @@ function renderMenu(canvasState, header, options, width) {
     canvasState.setTextAlign("start", "alphabetic");
 
     var currentY = y + 8;
-    for (var headerLine of headerLines) {
+    for (var i = 0; i < headerLines.length; i++) {
+        var headerLine = headerLines[i];
         canvasState.fillText(headerLine, x, currentY);
         currentY += 10;
     }
@@ -35,7 +36,8 @@ function renderMenu(canvasState, header, options, width) {
     }
 
     var letterIndex = "a".charCodeAt();
-    for (var option of options) {
+    for (var i = 0; i < options.length; i++) {
+        var option = options[i];
         var text = "(" + String.fromCharCode(letterIndex) + ") " + option;
         canvasState.fillText(text, x, currentY);
         currentY += 10;

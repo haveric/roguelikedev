@@ -41,7 +41,8 @@ GameMap.prototype.makeMap = function(mapWidth, mapHeight, player, entityManager)
         var newRoom = new Rect(x, y, width, height);
 
         var intersects = false;
-        for (var room of rooms) {
+        for (var j = 0; j < rooms.length; j++) {
+            var room = rooms[j];
             if (room.intersects(newRoom)) {
                 intersects = true;
                 break;
@@ -145,7 +146,8 @@ GameMap.prototype.placeEntities = function(room, entityManager) {
         var y = Random.getInt(room.y1 + 1, room.y2 - 1);
 
         var entityExistsAtLocation = false;
-        for (var entity of entityManager.entities) {
+        for (var j = 0; j < entityManager.entities.length; j++) {
+        var entity = entityManager.entities[j];
             if (entity.x == x && entity.y == y) {
                 entityExistsAtLocation = true;
                 break;
@@ -172,7 +174,8 @@ GameMap.prototype.placeEntities = function(room, entityManager) {
         var y = Random.getInt(room.y1 + 1, room.y2 - 1);
 
         var entityExistsAtLocation = false;
-        for (var entity of entityManager.entities) {
+        for (var j = 0; j < entityManager.entities.length; j++) {
+            var entity = entityManager.entities[j];
             if (entity.x == x && entity.y == y) {
                 entityExistsAtLocation = true;
                 break;
