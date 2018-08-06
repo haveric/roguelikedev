@@ -20,9 +20,13 @@ function () {
 
 if (!Object.values) {
     Object.values = function(obj) {
-        Object.keys(obj).map(function(e) {
-            return obj[e];
-        });
+        var res = [];
+        for (var i in obj) {
+            if (obj.hasOwnProperty(i)) {
+                res.push(obj[i]);
+            }
+        }
+        return res;
     }
 }
 
