@@ -101,8 +101,29 @@ CanvasState.prototype.fillText = function(text, x, y) {
     this.context.fillText(text, x * this.scale, y * this.scale);
 }
 
-CanvasState.prototype.fillRect = function(x, y, width, height) {
-    this.context.fillRect(Math.floor(x * this.scale), Math.floor(y * this.scale), Math.ceil(width * this.scale), Math.ceil(height * this.scale));
+CanvasState.prototype.fillRect = function(x, y, width, height, nextX, nextY) {
+    var curX = Math.floor(x * this.scale);
+    var curY = Math.floor(y * this.scale);
+    var scaledWidth = width * this.scale;
+    var scaledHeight = height * this.scale;
+
+    var newWidth = Math.ceil(scaledWidth);
+    var newHeight = Math.ceil(scaledHeight);
+
+    if (nextX && nextY) {
+        var curXPlus1 = Math.floor(nextX * this.scale);
+        var curYPlus1 = Math.floor(nextY * this.scale);
+
+        if (curX + scaledWidth > curXPlus1) {
+            newWidth = Math.floor(scaledWidth);
+        }
+
+        if (curY + scaledHeight > curYPlus1) {
+            newHeight = Math.floor(scaledHeight)
+        }
+    }
+
+    this.context.fillRect(curX, curY, newWidth, newHeight);
 }
 
 CanvasState.prototype.drawImage = function(image, x, y, width, height) {

@@ -18,5 +18,5 @@ AsciiMap.prototype.drawCharacter = function(canvasState, character, x, y, color)
 
 AsciiMap.prototype.drawBackground = function(canvasState, x, y, color) {
     canvasState.setFillStyle(color);
-    canvasState.fillRect(x * this.letterWidth, y * this.letterHeight, this.letterWidth, this.letterHeight);
+    canvasState.fillRect(x * this.letterWidth, y * this.letterHeight, this.letterWidth, this.letterHeight, (x + 1) * this.letterWidth, (y + 1) * this.letterHeight);
 }
